@@ -1,0 +1,82 @@
+<style>
+
+</style>
+<div class="pusher">
+	<div class="ui vertical inverted segment" style="padding:4em 0;">
+		<div class="ui text container">
+	      <h1 class="ui inverted header">
+	        Welcome to Microblog
+	      </h1>
+	      <h2>一个基于Node.js的微博系统</h2>
+	      <div>
+	      	<a href="/reg" class="ui large primary button">还没有账号？快来注册一个！</a>
+	      </div>
+	    </div>
+	</div>
+	
+	<div class="ui vertical stripe segment" style="margin-top: 2em;">
+	    <div class="ui middle container">
+		  	<div class="ui link cards">
+
+		  		<% comments.forEach(function(post, index){ %>
+		  		<div class="card">
+		  			<div class="content">
+		  				<div class="header"><%= post.title %></div>
+		  				<div class="description"><%= post.content %></div>
+		  			</div>
+		  			<div class="extra content">
+						<% 
+							var time = new Date(post.time);
+							var formated = time.getFullYear() + '-' + parseInt(time.getMonth()+1) + '-' + 
+							time.getDate() + '  ' + time.getHours() + ':' + time.getMinutes() + ':' +
+							time.getSeconds();
+						%>
+
+		  				<span class="right floated"><%= formated %></span>
+		  				<span><%= post.username %></span>
+		  			</div>
+		  		</div>
+
+		  		<% }) %>
+		  	</div>
+		</div>
+  	</div>
+
+	<!-- <div class="ui vertical stripe segment">
+	    <div class="ui middle container">
+		  	<div class="ui link cards">
+		  		<div class="card">
+		  			<div class="content">
+		  				<div class="header">title</div>
+		  				<div class="description">dasdasdasdasd</div>
+		  			</div>
+		  			<div class="extra content">
+		  				<span class="right floated">2015.1.1</span>
+		  				<span>psc</span>
+		  			</div>
+		  		</div>
+		  		<div class="card">
+		  			<div class="content">
+		  				<div class="header">title</div>
+		  				<div class="description">dasdasdasdasd</div>
+		  			</div>
+		  			<div class="extra content">
+		  				<span class="right floated">2015.1.1</span>
+		  				<span>psc</span>
+		  			</div>
+		  		</div>
+		  		<div class="card">
+		  			<div class="content">
+		  				<div class="header">title</div>
+		  				<div class="description">dasdasdasdasd</div>
+		  			</div>
+		  			<div class="extra content">
+		  				<span class="right floated">2015.1.1</span>
+		  				<span>psc</span>
+		  			</div>
+		  		</div>
+		  	</div>
+		</div>
+  	</div> -->
+</div>
+
