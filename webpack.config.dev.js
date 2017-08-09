@@ -35,15 +35,8 @@ module.exports = {
 		{
 			test: /\.css$/,
 			use:[
-				{
-					loader:"style-loader"
-				},
-				{
-					loader:"css-loader",
-					options:{
-						modules:true
-					}
-				}
+				"style-loader",
+				"css-loader"
 			]
 		},
 		{
@@ -65,17 +58,11 @@ module.exports = {
 		}
 	},
 	plugins: [
-		//   	new ExtractTextPlugin("bundle.css"),//分离css
-        // //根据模板自动生成html
-        // new HtmlWebpackPlugin({
-        //     title: 'MicroBlog'
-        // }),
-        // //提取公共资源
-		// new webpack.optimize.CommonsChunkPlugin({
-		// 	name:'vendor',
-		// 	filename:'vendor.js',
-		// 	minChunk: Infinity
-		// }),
+	 	new ExtractTextPlugin("bundle.css"),//分离css
+        //根据模板自动生成html
+        new HtmlWebpackPlugin({
+            title: 'MicroBlog'
+        }),
         new webpack.HotModuleReplacementPlugin()//热替换
   	],
     devServer: {

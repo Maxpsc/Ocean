@@ -14,6 +14,7 @@ class Reg extends Component {
             repassword: props.repassword
         };
         this.setValue = this.setValue.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     setValue(key) {
         return (val) => {
@@ -22,29 +23,30 @@ class Reg extends Component {
             this.setState(nState);
         };
     }
+    handleSubmit() {
+        const { username, password, repassword } = this.state;
+        this.props.register({username,password,repassword},null,
+            () => {
+                this.setState({password:'',repassword:''});
+            }
+        );
+    }
     render() {
         const { username, password, repassword } = this.state;
-        const { register } = this.props;
-        const submit = () => {
-            console.log(this.state);
-            console.log('Reg');
-            register({
-                username,password,repassword
-            });
-        };
+        const { hint } = this.props;
         const usernameReg = /^\w{3}\w*$/;
         const passwordReg = /^\w{6}\w*$/;
         const usernameValid = usernameReg.test(username);
         const passwordValid = passwordReg.test(password);
         const repasswordValid = password === repassword;
         return (
-            <div>
+            <div className="reg-box">
                 <h1>Reg</h1>
                 <MField
                     hintText="Username"
                     labelText="Username"
                     value={username}
-                    errorText="should bigger than 3 chars"
+                    errorText="should more than 3 chars"
                     required
                     match={/^\w{3}\w*$/}
                     onChange={this.setValue('username')}
@@ -54,7 +56,7 @@ class Reg extends Component {
                     hintText="Password"
                     labelText="Password"
                     value={password}
-                    errorText="should bigger than 6 chars"
+                    errorText="should more than 6 chars"
                     required
                     match={/^\w{6}\w*$/}
                     onChange={this.setValue('password')}
@@ -68,23 +70,24 @@ class Reg extends Component {
                     required
                     match={'='+password}
                     onChange={this.setValue('repassword')}
-                /><br />
+                /><br /><br />
                 <RaisedButton
                     label="JOIN US!"
                     primary={true}
                     disabled={!usernameValid || !passwordValid || !repasswordValid}
-                    onTouchTap={submit}
-                />
+                    onTouchTap={this.handleSubmit}
+                /><span className="submit-hint">{hint}</span>
             </div>
         );
     }
 };
 function mapStateToProps(state) {
-    const { username,password,repassword } = state.regReducer;
+    const { username,password,repassword,hint } = state.regReducer;
     return {
         username,
         password,
-        repassword
+        repassword,
+        hint
     };
 }
 function mapDispatchToProps(dispatch) {

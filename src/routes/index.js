@@ -6,6 +6,8 @@ import Footer from 'src/components/footer';
 import Home from 'src/views/home';
 import Reg from 'src/views/reg';
 import Login from 'src/views/login';
+import Public from 'src/views/public';
+
 import NoMatch from 'src/views/noMatch';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -18,12 +20,15 @@ class MainApp extends Component {
         return (
             <div>
                 <Header />
-                    <Switch>
-                        <Route path="/" exact component={Home} />
-                        <Route path="/reg" component={Reg} />
-                        <Route path="/login" component={Login} />
-                        <Route component={NoMatch} />
-                    </Switch>
+                    <div className="wrapper">
+                        <Switch>
+                            <Route path="/" exact component={Home} />
+                            <Route path="/reg" component={Reg} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/public" component={Public} />
+                            <Route component={NoMatch} />
+                        </Switch>
+                    </div>
                 <Footer />
             </div>
         );

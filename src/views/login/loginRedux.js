@@ -8,7 +8,10 @@ const initialState = {
 export function loginSuccess(data) {
     return (dispatch) => {
         dispatch({
-            type: LOG_SUCCESS
+            type: LOG_SUCCESS,
+            payload:{
+                hint:'login success'
+            }
         });
     };
 };
@@ -18,7 +21,7 @@ export default function loginReducer(state = initialState, action) {
         case LOG_SUCCESS:
             return {
                 ...state,
-                hint: 'login success'
+                hint: action.payload.hint
             };
         case LOG_ERROR:
             return {

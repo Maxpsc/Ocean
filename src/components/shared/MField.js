@@ -5,7 +5,6 @@ export default class MField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.value,
             valid: true,
             errorText: ''
         };
@@ -14,7 +13,7 @@ export default class MField extends Component {
     changeValue(e) {
         const value = e.target.value;
         const { required, match, errorText, onChange } = this.props;
-        const nState = {value: value};
+        let nState = {};
 
         if(value === '' && required){
             nState.errorText = 'This field is required';
@@ -31,8 +30,8 @@ export default class MField extends Component {
         this.setState(nState);
     }
     render() {
-        const { hintText, labelText, fullWidth, multiLine, type } = this.props;
-        const { value, errorText } = this.state;
+        const { value, hintText, labelText, fullWidth, multiLine, rows, rowsMax, type } = this.props;
+        const { errorText } = this.state;
         return (
             <TextField
                 hintText={hintText}
@@ -43,6 +42,8 @@ export default class MField extends Component {
                 onChange={e => this.changeValue(e)}
                 fullWidth={fullWidth}
                 multiLine={multiLine}
+                rows={rows}
+                rowsMax={rowsMax}
             />
         );
     }

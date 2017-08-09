@@ -54,9 +54,9 @@ module.exports = (app) => {
 		newPost.save(function(err){
 			if(err){
 				console.log(err);
+                res.send(packJSON(err,9));
 			}
-			console.log("public success");
-			return res.redirect('/');
+		    res.send(packJSON('Public success!'));
 		});
     });
     //user sign up

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../authority';
-import { loginSuccess } from './loginRedux';
+// import { loginSuccess } from './loginRedux';
 
 import { withRouter } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,6 +16,7 @@ class Login extends Component {
             password: props.password
         };
         this.setValue = this.setValue.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     setValue(key) {
         return (val) => {
@@ -24,20 +25,23 @@ class Login extends Component {
             this.setState(nState);
         };
     }
-    render() {
-        let {history,hint, login, loginSuccess} = this.props;
+    handleSubmit() {
+        let {history,login} = this.props;
         let {username,password} = this.state;
-        const submit = () => {
-            login({username, password},() => {
-                loginSuccess();
-                history.push('/');
-            });
-        };
+        login({username, password},() => {
+            history.push('/');
+        },() => {
+            this.setState({password:''});
+        });
+    }
+    render() {
+        let {hint} = this.props;
+        let {username,password} = this.state;
         const usernameReg = /^\w{3}\w*$/;
         const usernameValid = usernameReg.test(username);
         const passwordValid = password !== '';
         return (
-            <div>
+            <div className="login-box">
                 <h1>Login</h1>
                 <MField
                     hintText="Username"
@@ -55,12 +59,12 @@ class Login extends Component {
                     value={password}
                     required
                     onChange={this.setValue('password')}
-                /><br />
+                /><br /><br />
                 <RaisedButton
                     label='Login'
                     primary={true} disabled={!usernameValid || !passwordValid}
-                    onTouchTap={submit}
-                /><span>{hint}</span>
+                    onTouchTap={this.handleSubmit}
+                /><span className="submit-hint">{hint}</span>
             </div>
         );
     }
@@ -76,8 +80,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        login:bindActionCreators(login,dispatch),
-        loginSuccess:bindActionCreators(loginSuccess,dispatch)
+        login:bindActionCreators(login,dispatch)
+        // loginSuccess:bindActionCreators(loginSuccess,dispatch)
     };
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

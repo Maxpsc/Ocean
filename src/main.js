@@ -8,6 +8,8 @@ import configureStore, {history} from 'src/redux/configureStore';
 import MainApp from 'src/routes';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import './styles/main.min.css';
+
 const store = configureStore();
 const app = document.createElement('div');
 app.id = 'app';

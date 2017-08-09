@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { homeInit } from './homeRedux';
+
+import Banner from 'src/components/banner';
 import { logout } from '../authority';
 
 class Home extends Component {
@@ -18,16 +20,16 @@ class Home extends Component {
             <li key={index}>
                 <h5>{post.title}</h5>
                 <p>{post.content}</p>
+                <span>{post.username} {post.time}</span>
             </li>
         ));
         return (
             <div>
-                <h1>banner</h1>
-                <h1>posts</h1>
+                <Banner />
                 <p>{
                     identity === 'guest' ? 'Please login~~' : `Hello ${username}!`
                 }</p>
-                <ul>
+                <ul className="post-list">
                     {postList}
                 </ul>
             </div>

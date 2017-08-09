@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: {
@@ -64,6 +65,7 @@ module.exports = {
 		}
 	},
 	plugins: [
+		new CleanWebpackPlugin(['dist']),
 	    new webpack.DefinePlugin({
 	      'process.env': {
 	        'NODE_ENV': JSON.stringify('production')
@@ -85,7 +87,7 @@ module.exports = {
             title: 'MicroBlog'
         }),
         //提取公共资源
-        new webpack.optimize.CommonsChunkPlugin('common'),
+        // new webpack.optimize.CommonsChunkPlugin('common'),
         new webpack.HotModuleReplacementPlugin()//热替换
   	]
 };

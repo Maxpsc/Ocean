@@ -37,6 +37,14 @@ export function login(data, successCallback, errorCallback=() => {}) {
                         error: res.items
                     }
                 });
+                setTimeout(function(){
+                    dispatch({
+                        type: LOG_ERROR,
+                        payload: {
+                            error: ''
+                        }
+                    });
+                },2000);
                 errorCallback();
             }
         })

@@ -7,9 +7,12 @@ import {logout} from 'src/views/authority';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Drawer from 'material-ui/Drawer';
+import Dialog from 'material-ui/Dialog';
 
 class Logged extends Component {
     render(){
@@ -19,7 +22,8 @@ class Logged extends Component {
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <MenuItem primaryText="Logout" onTouchTap={this.props.handle} />
+            <MenuItem primaryText="Public" containerElement={<Link to="/public"></Link>} />
+            <MenuItem primaryText="Logout" onTouchTap={this.props.handle} />
             </IconMenu>
         );
     }
@@ -38,24 +42,67 @@ const NotLogged = () => (
 class Header extends Component {
     constructor(){
         super();
+        this.state = {
+            drawer: false,
+            dialog: false
+        };
+        this.toggleDrawer = this.toggleDrawer.bind(this);
+        this.showDialog = this.showDialog.bind(this);
+        this.hideDialog = this.hideDialog.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
+    }
+    toggleDrawer() {
+        this.setState({drawer:!this.state.drawer});
+    }
+    showDialog() {
+        this.setState({dialog: true});
+    }
+    hideDialog() {
+        this.setState({dialog: false});
+    }
+    handleLogout() {
+        this.props.logout();
+        this.hideDialog();
     }
     render() {
-        const { history, logout, identity } = this.props;
+        const { history, identity } = this.props;
+        const { drawer } = this.state;
         const handleTitleTouch = () => {
             history.push('/');
         };
-        const handleLogout = () => {
-            if(confirm('Make sure logout?')){
-                logout();
-            }
-        };
-        const elemRight = identity === 'guest' ? (<NotLogged />) : (<Logged handle={handleLogout} />);
-        return (
-            <AppBar
-                title="MicroBlog"
-                onTitleTouchTap={handleTitleTouch}
-                iconElementRight={elemRight}
+        const elemRight = identity === 'guest' ? (<NotLogged />) : (<Logged handle={this.showDialog} />);
+        const dialogActions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.hideDialog}
+            />,
+            <FlatButton
+                label="Logout"
+                primary={true}
+                onTouchTap={this.handleLogout}
             />
+        ];
+        return (
+            <div>
+                <AppBar
+                    title="MicroBlog"
+                    onLeftIconButtonTouchTap={this.toggleDrawer}
+                    onTitleTouchTap={handleTitleTouch}
+                    iconElementRight={elemRight}
+                />
+            <Drawer open={drawer} openSecondary={true}>
+                drawer
+            </Drawer>
+            <Dialog
+              actions={dialogActions}
+              modal={true}
+              open={this.state.dialog}
+              onRequestClose={this.hideDialog}
+            >
+              Make sure to logout?
+            </Dialog>
+            </div>
         );
     }
 };

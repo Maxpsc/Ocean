@@ -1,0 +1,30 @@
+components:
+    common:
+        input, button, loading, empty
+    container:
+        mainApp:{
+            header, banner, footer, postList{ post }
+        }
+actions:
+    home:
+        home_init (get_posts)
+        logout
+    reg:
+        register
+    login:
+        login
+    user:
+        get_user
+        get_posts
+    public:
+        public
+        
+router:
+    /
+    /reg
+    /login
+    /public
+    /user:id
+
+    /*other  notFoundPage
+  
