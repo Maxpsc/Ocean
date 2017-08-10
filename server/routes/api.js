@@ -44,20 +44,25 @@ module.exports = (app) => {
     //public post
     app.post('/api/posts/public', (req,res) => {
         console.log(req.body);
-        let newPost = new Post({
-            username: req.body.username,
-			title: req.body.title,
-			content:req.body.content,
-			time: new Date()
-        });
-        //保存至mongodb
-		newPost.save(function(err){
-			if(err){
-				console.log(err);
-                res.send(packJSON(err,9));
-			}
-		    res.send(packJSON('Public success!'));
-		});
+        if(!req.body.uid || !req.body.username){
+            res.send(packJSON('权限错误',8));
+        }else{
+            let newPost = new Post({
+                uid: req.body.uid,
+                username: req.body.username,
+    			title: req.body.title,
+    			content:req.body.content,
+    			time: new Date()
+            });
+            //保存至mongodb
+    		newPost.save(function(err){
+    			if(err){
+    				console.log(err);
+                    res.send(packJSON(err,9));
+    			}
+    		    res.send(packJSON('Public success!'));
+    		});
+        }
     });
     //user sign up
     app.post('/api/reg', (req,res) => {
@@ -67,7 +72,7 @@ module.exports = (app) => {
 		}
         //生成密码散列
         let md5 = crypto.createHash('md5');
-        let password = md5.update(req.body.password).digest('base64');
+        let password = md5.update(req.body.password).digest('hex');
         //生成User对象
         let newUser= new User({
             username: req.body.username,
@@ -100,7 +105,7 @@ module.exports = (app) => {
         console.log(req.body);
         //生成密码散列
         let md5 = crypto.createHash('md5');
-		let password = md5.update(req.body.password).digest('base64');
+		let password = md5.update(req.body.password).digest('hex');
         //生成用户对象
         let loginUser = {
             username:req.body.username,
@@ -113,11 +118,13 @@ module.exports = (app) => {
             if(user){
 				req.session.user = user;
 				console.log('login success');
-				res.send(packJSON('登录成功'));
+				res.send(packJSON({
+                    user:user
+                }));
 			}else{
 				req.session.user = null;
 				console.log('login fail');
-                res.send(packJSON('用户名/密码错误，登录失败',6));
+                res.send(packJSON('用户名/密码错误',6));
 			}
         });
     });

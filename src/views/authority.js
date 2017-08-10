@@ -1,6 +1,7 @@
 import { LOG_IN, LOG_OUT, LOG_ERROR } from 'src/constants';
 const initialState = {
     identity: 'guest',
+    uid: '',
     username: ''
 };
 
@@ -26,7 +27,8 @@ export function login(data, successCallback, errorCallback=() => {}) {
                 dispatch({
                     type: LOG_IN,
                     payload: {
-                        username: data.username
+                        uid: res.items.user.uid,
+                        username: res.items.user.username
                     }
                 });
                 successCallback();
@@ -78,12 +80,14 @@ export default function authorityReducer(state = initialState, action) {
         case LOG_IN:
             return {
                 identity: 'user',
-                username: action.payload.username
+                username: action.payload.username,
+                uid: action.payload.uid
             };
         case LOG_OUT:
             return {
                 identity: 'guest',
-                username: ''
+                username: '',
+                uid: ''
             };
         default:
             return state;

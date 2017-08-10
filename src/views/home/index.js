@@ -37,12 +37,13 @@ class Home extends Component {
     }
 };
 function mapStateToProps(state) {
-    const { identity,username } = state.authorityReducer;
+    const { identity,username,uid } = state.authorityReducer;
     const { posts } = state.homeReducer;
     return {
         posts,
         username,
-        identity
+        identity,
+        uid
     };
 }
 function mapDispatchToProps(dispatch) {

@@ -27,9 +27,10 @@ class Public extends Component {
         };
     }
     handleSubmit() {
-        let {history} = this.props;
+        let {history, uid} = this.props;
         let {username, title, content} = this.state;
         this.props.publicPost({
+            uid,
             username,
             title,
             content,
@@ -77,10 +78,11 @@ class Public extends Component {
 };
 function mapStateToProps(state) {
     // const { title, content, hint } = state.publicReducer;
-    const { identity, username } = state.authorityReducer;
+    const { identity, username, uid } = state.authorityReducer;
     return {
         identity,
-        username
+        username,
+        uid
     };
 }
 function mapDispatchToProps(dispatch) {

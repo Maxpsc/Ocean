@@ -2,6 +2,7 @@
 const dbConnection = require('./db');
 class User{
     constructor(user) {
+        this.uid = user._id;
         this.username = user.username;
         this.password = user.password;
     }
@@ -47,6 +48,7 @@ User.check = (user,callback) => {
         }
         let collection = db.collection('users');
         collection.findOne(user, (err,doc) => {
+            console.log(doc);
             db.close();
             let user = doc ? new User(doc) : null;
             callback && callback(err,user);
