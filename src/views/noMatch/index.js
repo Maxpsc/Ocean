@@ -6,8 +6,8 @@ class NoMatch extends Component {
     }
     render() {
         return (
-            <div>
-                404 Not Found!
+            <div className='form-box'>
+                <h1>404 Not Found!</h1>
             </div>
         );
     }

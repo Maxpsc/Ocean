@@ -1,26 +1,20 @@
 import { HOME_INIT } from 'src/constants';
+import { fetchGet } from 'src/service/posts';
+
 const initialState = {
     posts: []
 };
 export function homeInit() {
     return (dispatch) => {
-        fetch("http://localhost:3000/api/posts",{
-          method:'GET',
-          mode:'cors',
-          credentials: "same-origin"
-        })
-        .then(res => res.json())
+        fetchGet()
         .then(res => {
-            console.log(res);
-            if(res.error_code === 0){
-                dispatch({
-                    type: HOME_INIT,
-                    payloads: res.items
-                });
-            }
+            dispatch({
+                type: HOME_INIT,
+                payloads: res.items
+            });
         })
-        .catch(error => {
-            console.log(error);
+        .catch(res => {
+            console.log(res);
         });
     };
 }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { homeInit } from './homeRedux';
+import { withRouter } from 'react-router-dom';
 
 import Banner from 'src/components/banner';
 import { logout } from '../authority';
@@ -14,8 +15,7 @@ class Home extends Component {
         this.props.homeInit();
     }
     render() {
-        console.log(this.props);
-        let { identity, username, posts } = this.props;
+        let { identity, username, posts, history } = this.props;
         let postList = posts.map((post,index) => (
             <li key={index}>
                 <h5>{post.title}</h5>
@@ -25,10 +25,7 @@ class Home extends Component {
         ));
         return (
             <div>
-                <Banner />
-                <p>{
-                    identity === 'guest' ? 'Please login~~' : `Hello ${username}!`
-                }</p>
+                <Banner user={{identity,username}} history={history} />
                 <ul className="post-list">
                     {postList}
                 </ul>
@@ -52,4 +49,4 @@ function mapDispatchToProps(dispatch) {
         logout: bindActionCreators(logout,dispatch)
     };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

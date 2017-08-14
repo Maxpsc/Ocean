@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { login } from '../authority';
-// import { loginSuccess } from './loginRedux';
-
 import { withRouter } from 'react-router-dom';
+
+import { login } from '../authority';
 import RaisedButton from 'material-ui/RaisedButton';
 import MField from 'src/components/shared/MField';
 
@@ -12,8 +11,9 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username: props.username,
-            password: props.password
+            username: '',
+            password: '',
+            hint: ''
         };
         this.setValue = this.setValue.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,21 +27,24 @@ class Login extends Component {
     }
     handleSubmit() {
         let {history,login} = this.props;
+        console.log(this.props);
         let {username,password} = this.state;
-        login({username, password},() => {
+        login({username, password},(res) => {
             history.push('/');
-        },() => {
-            this.setState({password:''});
+        },(res) => {
+            this.setState({password: '', hint: res.items});
+            setTimeout(() => {
+                this.setState({hint:''});
+            },2000);
         });
     }
     render() {
-        let {hint} = this.props;
-        let {username,password} = this.state;
+        let { username, password, hint } = this.state;
         const usernameReg = /^\w{3}\w*$/;
         const usernameValid = usernameReg.test(username);
         const passwordValid = password !== '';
         return (
-            <div className="login-box">
+            <div className="form-box">
                 <h1>Login</h1>
                 <MField
                     hintText="Username"
@@ -69,19 +72,10 @@ class Login extends Component {
         );
     }
 };
-function mapStateToProps(state) {
-    const {username,password,logining,hint} = state.loginReducer;
-    return {
-        username,
-        password,
-        logining,
-        hint
-    };
-}
+
 function mapDispatchToProps(dispatch) {
     return {
         login:bindActionCreators(login,dispatch)
-        // loginSuccess:bindActionCreators(loginSuccess,dispatch)
     };
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(null,mapDispatchToProps)(Login));

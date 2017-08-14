@@ -19,14 +19,21 @@ body{
 }
 .banner{
     width:100%;
-    height:18rem;
+    height:16rem;
     background-color: #00838f;
     display: flex;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
     h1{
         color:#FFF;
         font-size: 2rem;
+        margin-bottom: 20px;
+    }
+    h2{
+        color:darken(#FFF,20%);
+        font-size: 1.4rem;
+        line-height: 2rem;
     }
 }
 .post-list{
@@ -53,7 +60,7 @@ body{
         }
     }
 }
-.reg-box,.login-box,.public-box{
+.form-box{
     padding:1.2rem;
     text-align: center;
     h1{

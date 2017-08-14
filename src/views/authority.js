@@ -1,4 +1,5 @@
-import { LOG_IN, LOG_OUT, LOG_ERROR } from 'src/constants';
+import { LOG_IN, LOG_OUT } from 'src/constants';
+import { fetchLogin, fetchLogout } from 'src/service/auth';
 const initialState = {
     identity: 'guest',
     uid: '',
@@ -8,70 +9,32 @@ const initialState = {
 export function login(data, successCallback, errorCallback=() => {}) {
     return (dispatch, getState) => {
         //{usernmae:str,password:str}
-        console.log(data);
-        let formData = new FormData();
-        formData.append('json', JSON.stringify(data));
-        let headers = new Headers();
-        headers.append('Content-Type','application/json');
-        fetch("http://localhost:3000/api/login",{
-          method:'POST',
-          mode:'cors',
-          credentials: "same-origin",
-          headers: headers,
-          body: JSON.stringify(data)
-        })
-        .then(res => res.json())
+        fetchLogin(data)
         .then(res => {
-            console.log(res);
-            if(res.error_code === 0){
-                dispatch({
-                    type: LOG_IN,
-                    payload: {
-                        uid: res.items.user.uid,
-                        username: res.items.user.username
-                    }
-                });
-                successCallback();
-            }else{
-                dispatch({
-                    type: LOG_ERROR,
-                    payload: {
-                        error: res.items
-                    }
-                });
-                setTimeout(function(){
-                    dispatch({
-                        type: LOG_ERROR,
-                        payload: {
-                            error: ''
-                        }
-                    });
-                },2000);
-                errorCallback();
-            }
+            dispatch({
+                type: LOG_IN,
+                payload: {
+                    uid: res.items.user.uid,
+                    username: res.items.user.username
+                }
+            });
+            successCallback && successCallback(res);
         })
-        .catch(error => {
-            console.log(error);
+        .catch(res => {
+            errorCallback(res);
         });
     };
 };
 export function logout() {
     return (dispatch) => {
-        fetch("http://localhost:3000/api/logout",{
-            method:'GET',
-            mode:'cors',
-            credentials: 'same-origin'
-        })
-        .then(res => res.json())
+        fetchLogout()
         .then(res => {
-            if(res.error_code === 0){
-                dispatch({
-                    type: LOG_OUT
-                });
-            }
+            dispatch({
+                type: LOG_OUT
+            });
         })
-        .catch(error => {
-            console.log(error);
+        .catch(res => {
+            console.log(res);
         });
     };
 };

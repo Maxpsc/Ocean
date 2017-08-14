@@ -1,23 +1,25 @@
 import React, {Component} from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { publicPost } from './publicRedux';
+import { fetchPublic } from 'src/service/posts';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 import MField from 'src/components/shared/MField';
 
 class Public extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username: props.username,
             title: '',
             content: '',
-            hint: ''
+            hint: '',
+            dialog: false
         };
         this.setValue = this.setValue.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDialog = this.handleDialog.bind(this);
     }
     setValue(key) {
         return (val) => {
@@ -27,27 +29,41 @@ class Public extends Component {
         };
     }
     handleSubmit() {
-        let {history, uid} = this.props;
-        let {username, title, content} = this.state;
-        this.props.publicPost({
+        let { username, uid } = this.props;
+        let { title, content } = this.state;
+        fetchPublic({
             uid,
             username,
             title,
             content,
             time: new Date()
-        },() => {
-            history.push('/');
-        },(res) => {
+        })
+        .then(res => {
+            //public success => pop modal
+            this.setState({dialog: true});
+        })
+        .catch(res => {
             this.setState({hint: res.items});
         });
     }
+    handleDialog() {
+        let {history} = this.props;
+        history.push('/');
+    }
     render() {
-        const { title, content, hint } = this.state;
+        const { title, content, hint, dialog } = this.state;
 
         const titleValid = title !== '';
         const contentValid = content !== '';
+        const dialogAction = [
+            <FlatButton
+                label="Home"
+                primary={true}
+                onTouchTap={this.handleDialog}
+            />
+        ];
         return (
-            <div className="public-box">
+            <div className="public-box form-box">
                 <h1>Public your blog</h1>
                 <MField
                     hintText="Title"
@@ -72,12 +88,20 @@ class Public extends Component {
                     disabled={!titleValid || !contentValid}
                     onTouchTap={this.handleSubmit}
                 /><span className="submit-hint">{hint}</span>
+
+                <Dialog
+                  actions={dialogAction}
+                  modal={true}
+                  open={dialog}
+                  onRequestClose={this.handleDialog}
+                >
+                  Public success!
+                </Dialog>
             </div>
         );
     }
 };
 function mapStateToProps(state) {
-    // const { title, content, hint } = state.publicReducer;
     const { identity, username, uid } = state.authorityReducer;
     return {
         identity,
@@ -85,9 +109,4 @@ function mapStateToProps(state) {
         uid
     };
 }
-function mapDispatchToProps(dispatch) {
-    return {
-        publicPost:bindActionCreators(publicPost, dispatch)
-    };
-}
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Public));
+export default withRouter(connect(mapStateToProps)(Public));

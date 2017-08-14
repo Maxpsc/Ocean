@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { register } from './regRedux';
+// import { bindActionCreators } from 'redux';
+// import { connect } from 'react-redux';
+
+import { fetchReg } from 'src/service/auth';
 import RaisedButton from 'material-ui/RaisedButton';
 import MField from 'src/components/shared/MField';
 
-class Reg extends Component {
+export default class Reg extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username: props.username,
-            password: props.password,
-            repassword: props.repassword
+            username: '',
+            password: '',
+            repassword: '',
+            hint: ''
         };
         this.setValue = this.setValue.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,22 +27,26 @@ class Reg extends Component {
     }
     handleSubmit() {
         const { username, password, repassword } = this.state;
-        this.props.register({username,password,repassword},null,
-            () => {
-                this.setState({password:'',repassword:''});
-            }
-        );
+        fetchReg({username,password,repassword})
+        .then(res => {
+            this.setState({password:'',repassword:'',hint:res.items});
+        })
+        .catch(res => {
+            this.setState({password:'',repassword:'',hint:res.items});
+        });
+        setTimeout(() => {
+            this.setState({hint:''});
+        },2000);
     }
     render() {
-        const { username, password, repassword } = this.state;
-        const { hint } = this.props;
+        const { username, password, repassword, hint } = this.state;
         const usernameReg = /^\w{3}\w*$/;
         const passwordReg = /^\w{6}\w*$/;
         const usernameValid = usernameReg.test(username);
         const passwordValid = passwordReg.test(password);
         const repasswordValid = password === repassword;
         return (
-            <div className="reg-box">
+            <div className="form-box">
                 <h1>Reg</h1>
                 <MField
                     hintText="Username"
@@ -81,18 +87,3 @@ class Reg extends Component {
         );
     }
 };
-function mapStateToProps(state) {
-    const { username,password,repassword,hint } = state.regReducer;
-    return {
-        username,
-        password,
-        repassword,
-        hint
-    };
-}
-function mapDispatchToProps(dispatch) {
-    return {
-        register:bindActionCreators(register, dispatch)
-    };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Reg);
