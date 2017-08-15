@@ -1,6 +1,7 @@
 const host = 'http://localhost:3000';
 
 export default function(url, method='GET', data){
+    console.log(data);
     let Header = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

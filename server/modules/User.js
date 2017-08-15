@@ -3,12 +3,14 @@ const dbConnection = require('./db');
 class User{
     constructor(user) {
         this.uid = user._id;
+        this.identity = user.identity;
         this.username = user.username;
         this.password = user.password;
     }
     //sign up
     save(callback) {
         let user = {
+            identity:this.identity,
             username:this.username,
     		password:this.password
         };

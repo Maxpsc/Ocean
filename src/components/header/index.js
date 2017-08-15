@@ -14,8 +14,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Drawer from 'material-ui/Drawer';
 import Dialog from 'material-ui/Dialog';
 
-class Logged extends Component {
-    render(){
+class UserLogged extends Component {
+    render() {
         return (
             <IconMenu
               iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
@@ -28,6 +28,21 @@ class Logged extends Component {
         );
     }
 };
+class AdminLogged extends Component {
+    render() {
+        return (
+            <IconMenu
+              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+            >
+            <MenuItem primaryText="Posts" containerElement={<Link to="/posts"></Link>} />
+            <MenuItem primaryText="Users" containerElement={<Link to="/users"></Link>} />
+            <MenuItem primaryText="Logout" onTouchTap={this.props.handle} />
+            </IconMenu>
+        );
+    }
+};
 const NotLogged = () => (
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
@@ -35,7 +50,7 @@ const NotLogged = () => (
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
     >
     <MenuItem primaryText="Reg" containerElement={<Link to="/reg"></Link>} />
-    <MenuItem primaryText="Login" containerElement={<Link to="/Login"></Link>} />
+    <MenuItem primaryText="Login" containerElement={<Link to="/login"></Link>} />
     </IconMenu>
 );
 
@@ -70,7 +85,15 @@ class Header extends Component {
         const handleTitleTouch = () => {
             history.push('/');
         };
-        const elemRight = identity === 'guest' ? (<NotLogged />) : (<Logged handle={this.showDialog} />);
+        let elemRight;
+        switch(identity){
+            case 'user':
+                elemRight = (<UserLogged handle={this.showDialog} />);break;
+            case 'admin':
+                elemRight = (<AdminLogged handle={this.showDialog} />);break;
+            default:
+                elemRight = (<NotLogged />);break;
+        }
         const dialogActions = [
             <FlatButton
                 label="Cancel"

@@ -27,7 +27,7 @@ export default class Reg extends Component {
     }
     handleSubmit() {
         const { username, password, repassword } = this.state;
-        fetchReg({username,password,repassword})
+        fetchReg({ username, password, repassword, 'identity':'user' })
         .then(res => {
             this.setState({password:'',repassword:'',hint:res.items});
         })

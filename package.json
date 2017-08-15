@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "server": "node ./bin/www ",
-    "dev": "NODE_ENV=development webpack-dev-server --config webpack.config.dev.js --progress --inline --port 9090",
+    "dev": "NODE_ENV=development webpack-dev-server --config webpack.config.dev.js --progress --inline --port 9090 & open http://localhost:9090",
     "build": "NODE_ENV=production webpack --config webpack.config.prd.js"
   },
   "author": "Peng sicheng",

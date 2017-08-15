@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+// const MongoStore = require('connect-mongo')(session);
 const settings = require('./Setting');
 
 const app = express();
@@ -23,9 +23,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 //session
 app.use(session({
 	secret: settings.cookieSecret,
-	store: new MongoStore({
-		url: 'mongodb://'+ settings.host +'/'+ settings.db
-	})
+	resave: false,
+  	saveUninitialized: true,
+	cookie: {
+		maxAge: 60 * 1000
+	},
+	// store: new MongoStore({
+	// 	url: 'mongodb://'+ settings.host +'/'+ settings.db
+	// })
 }));
 //static sources
 app.use('/dist', express.static('dist'));

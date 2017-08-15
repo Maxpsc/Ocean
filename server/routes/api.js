@@ -36,14 +36,16 @@ module.exports = (app) => {
     });
     //get all/one posts
     app.get('/api/posts', (req,res) => {
+        console.log(req.session);
+        if(!req.session.user){
+            req.session.destroy();
+        }
         Post.get(req.query,(posts) => {
-            console.log(req.session);
             res.send(packJSON(posts));
         });
     });
     //public post
     app.post('/api/posts/public', (req,res) => {
-        console.log(req.body);
         if(!req.body.uid || !req.body.username){
             res.send(packJSON('权限错误',8));
         }else{
@@ -64,6 +66,41 @@ module.exports = (app) => {
     		});
         }
     });
+    //update post @admin
+    app.post('/api/posts/update', (req,res) => {
+        if(!req.body.uid || !req.body.username){
+            res.send(packJSON('权限错误',8));
+        }else{
+            let newPost = new Post({
+                uid: req.body.uid,
+                username: req.body.username,
+    			title: req.body.title,
+    			content:req.body.content,
+    			time: new Date()
+            });
+    		newPost.update(req.body._id, function(err){
+    			if(err){
+    				console.log(err);
+                    res.send(packJSON(err,9));
+    			}
+    		    res.send(packJSON('Update success!'));
+    		});
+        }
+    });
+    //delete posts @admin
+    app.post('/api/posts/delete', (req,res) => {
+        if(!req.body.uid || !req.body.username){
+            res.send(packJSON('权限错误',8));
+        }else{
+    		Post.delete(req.body.ids, function(err){
+    			if(err){
+    				console.log(err);
+                    res.send(packJSON(err,9));
+    			}
+    		    res.send(packJSON('Delete success!'));
+    		});
+        }
+    });
     //user sign up
     app.post('/api/reg', (req,res) => {
         if((req.body.password !== req.body.repassword) || req.body.username==='' || req.body.password===''){
@@ -75,6 +112,7 @@ module.exports = (app) => {
         let password = md5.update(req.body.password).digest('hex');
         //生成User对象
         let newUser= new User({
+            identity: req.body.identity,
             username: req.body.username,
             password: password
         });
@@ -111,12 +149,13 @@ module.exports = (app) => {
             username:req.body.username,
             password:password
         };
+        console.log(loginUser);
         User.check(loginUser,(err,user) => {
             if(err){
                 res.send(packJSON(err,9));
             }
             if(user){
-				req.session.user = user;
+                req.session.user = user;
 				console.log('login success');
 				res.send(packJSON({
                     user:user
@@ -126,11 +165,14 @@ module.exports = (app) => {
 				console.log('login fail');
                 res.send(packJSON('用户名/密码错误',6));
 			}
+            console.log(req.session);
         });
     });
     //user log out
     app.get('/api/logout',(req,res) => {
-        req.session.user = null;
+        console.log(req.session);
+        req.session.destroy();
+        console.log(req.session);
         res.send(packJSON('登出成功'));
     });
 };

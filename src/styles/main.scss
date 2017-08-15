@@ -2,6 +2,7 @@
 body,div,h1,h2,h3,h4,h5,p,a,ul,dl,ol{
     margin:0;padding:0;
 }
+@import "table";
 ul{
     list-style-type: none;
 }
@@ -72,6 +73,9 @@ body{
 }
 .public-box{
     text-align: left;
+}
+.list-wrap{
+    padding:1.2rem;
 }
 .footer{
     position:absolute;

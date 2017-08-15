@@ -29,6 +29,26 @@ class Post{
             });
         });
     }
+    update(id,callback) {
+        dbConnection((err,db) => {
+            if (err) {
+                console.log(err);return;
+            }
+            let post = {
+                uid: this.uid,
+                username: this.username,
+        		title: this.title,
+        		content: this.content,
+        		time: this.time
+            };
+            let collection = db.collection('posts');
+            collection.updateOne({'_id':id},{$set: post},function(err, result){
+                console.log('edit success');
+                db.close();
+                callback && callback(err,result);
+            });
+        });
+    }
 }
 
 Post.get = (query = {}, callback) => {
@@ -51,6 +71,24 @@ Post.get = (query = {}, callback) => {
             });
             callback && callback(posts);
         });
+    });
+};
+Post.delete = (ids=[], callback) => {
+    dbConnection((err,db) => {
+        if (err) {
+            console.log(err);return;
+        }
+        let collection = db.collection('posts');
+
+        for(let i=0;i<ids.length;i++){
+            collection.deleteOne({'_id':ids[i]}, function(err, result){
+                if(i === ids.length-1){
+                    console.log('delete success');
+                    db.close();
+                    callback && callback(err,result);
+                }
+            });
+        }
     });
 };
 module.exports = Post;

@@ -25,23 +25,3 @@ ReactDOM.render(
     </Provider>,
     app
 );
-
-// async function run () {
-//     try {
-//         await new Promise.reject('sth wrong!');
-//     } catch (err) {
-//         console.warn(err);
-//     }
-//
-// };
-let run = new Promise(function(resolve,reject){
-    console.log('this is promise');
-    setTimeout(function(){
-        resolve();
-    },2000);
-    // resolve();
-});
-
-run
-.then( res => console.log(111))
-.catch( err => console.log(err));

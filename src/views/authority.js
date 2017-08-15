@@ -1,21 +1,25 @@
-import { LOG_IN, LOG_OUT } from 'src/constants';
+import { LOG_IN, LOG_OUT, CHECK_AUTH } from 'src/constants';
 import { fetchLogin, fetchLogout } from 'src/service/auth';
 const initialState = {
     identity: 'guest',
     uid: '',
     username: ''
 };
-
+export function checkAuth() {
+    
+}
 export function login(data, successCallback, errorCallback=() => {}) {
     return (dispatch, getState) => {
         //{usernmae:str,password:str}
         fetchLogin(data)
         .then(res => {
+            console.log(res);
             dispatch({
                 type: LOG_IN,
                 payload: {
                     uid: res.items.user.uid,
-                    username: res.items.user.username
+                    username: res.items.user.username,
+                    identity: res.items.user.identity
                 }
             });
             successCallback && successCallback(res);
@@ -40,9 +44,15 @@ export function logout() {
 };
 export default function authorityReducer(state = initialState, action) {
     switch(action.type){
+        case CHECK_AUTH:
+            return {
+                identity: action.payload.identity,
+                username: action.payload.username,
+                uid: action.payload.uid
+            };
         case LOG_IN:
             return {
-                identity: 'user',
+                identity: action.payload.identity,
                 username: action.payload.username,
                 uid: action.payload.uid
             };
