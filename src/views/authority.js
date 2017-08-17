@@ -25,9 +25,9 @@ export function login(data, successCallback, errorCallback=() => {}) {
         fetchLogin(data)
         .then(res => {
             let userStore = {
-                uid: res.items.user.uid,
-                username: res.items.user.username,
-                identity: res.items.user.identity
+                uid: res.items.uid,
+                username: res.items.user_name,
+                identity: res.items.identity
             };
             dispatch({
                 type: LOG_IN,

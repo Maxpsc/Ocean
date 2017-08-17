@@ -2,7 +2,7 @@
   "name": "microblog",
   "version": "1.0.0",
   "scripts": {
-    "server": "SERVER_PORT=3000 node server.js",
+    "server": "SERVER_PORT=3000 node server.js --harmony-async-await",
     "dev": "NODE_ENV=development webpack-dev-server --config webpack.config.dev.js --progress --inline --history-api-fallback --port 9090 & open http://localhost:9090",
     "build": "NODE_ENV=production webpack --config webpack.config.prd.js"
   },
@@ -12,6 +12,7 @@
     "babel-loader": "^7.1.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "clean-webpack-plugin": "^0.1.16",
     "connect-mongo": "^1.3.2",
@@ -44,6 +45,7 @@
     "serve-favicon": "~2.4.2",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
+    "uuid": "^3.1.0",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1"
   },

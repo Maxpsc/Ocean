@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+mongoose.Promise = Promise;//for async/await
 
 const dbUrl = 'mongodb://localhost:27017/microblog';
-mongoose.connect(dbUrl,{server: {auto_reconnect: true}});
+mongoose.connect(dbUrl,{useMongoClient: true});
 const db = mongoose.connection;
 
 db.once('open', () => {
@@ -13,7 +14,7 @@ db.on('error', (error) => {
 });
 db.on('close', () => {
 	console.log('数据库断开，准备重新连接');
-	mongoose.connect(dbUrl,{server: {auto_reconnect: true}});
+	mongoose.connect(dbUrl,{useMongoClient: true});
 });
 
-module.exports = db;
+export default db;

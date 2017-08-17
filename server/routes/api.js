@@ -1,6 +1,6 @@
-const crypto = require('crypto');//express 核心模块之一，用于加密生成各种散列
-const User = require('../modules/User');
-const Post = require('../modules/Post');
+import crypto from 'crypto';//express 核心模块之一，用于加密生成各种散列
+import User from '../modules/User';
+import Post from '../modules/Post';
 
 /**
  * 包装返回的json,包含错误提示信息和错误码

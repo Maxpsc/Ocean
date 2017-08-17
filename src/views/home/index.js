@@ -20,7 +20,7 @@ class Home extends Component {
             <li key={index}>
                 <h5>{post.title}</h5>
                 <p>{post.content}</p>
-                <span>{post.username} {post.time}</span>
+                <span>{post.user_name} { post.create_time }</span>
             </li>
         ));
         return (
