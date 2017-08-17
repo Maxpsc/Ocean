@@ -1,57 +1,78 @@
-import { GET_POST, DELETE_POST, EDIT_POST } from 'src/constants';
-import { fetchGet, fetchDelete, fetchEdit } from 'src/service/posts';
+import { GET_POST, DELETE_POST, UPDATE_POST } from 'src/constants';
+import { fetchGet, fetchDelete, fetchUpdate } from 'src/service/posts';
 
 let initialState = {
-    posts: []
+    posts: [],
+    hint: ''
 };
 export function getPosts(dispatch) {
-    return (dispatch) => {
-        fetchGet()
-        .then(res => {
+    return async (dispatch) => {
+        try {
+            const res = await fetchGet();
             dispatch({
                 type: GET_POST,
                 payload: res.items
             });
-        })
-        .catch(res => {
-            console.log(res);
-        });
+        } catch (err) {
+            console.log(err);
+        }
     };
 };
 
 export function deletePosts(id) {
-    return (dispatch) => {
-        fetchDelete({ids:[id]})
-        .then(res => {
-            fetchGet()
-            .then(res => {
-                dispatch({
-                    type: GET_POST,
-                    payload: res.items
-                });
-            })
-            .catch(res => {
-                console.log(res);
+    return async (dispatch) => {
+        try {
+            const deleteRes = await fetchDelete({id:id});
+            dispatch({
+                type: DELETE_POST,
+                payload: deleteRes.items
             });
-        })
-        .catch(res => {
-            console.log(res);
-        });
+            const getRes = await fetchGet();
+            dispatch({
+                type: GET_POST,
+                payload: getRes.items
+            });
+        } catch (error) {
+            console.log(error);
+        }
     };
 };
 
-export function editPost() {
-
+export function editPost(id, post) {
+    return async (dispatch) => {
+        try {
+            const updateRes = fetchUpdate({id,post});
+            dispatch({
+                type: UPDATE_POST,
+                payload: deleteRes.items
+            });
+            const getRes = await fetchGet();
+            dispatch({
+                type: GET_POST,
+                payload: getRes.items
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
 };
 export default function postsReducer (state = initialState, action) {
     switch(action.type){
         case GET_POST:
             return {
+                ...state,
                 posts: action.payload
             };
-        // case DELETE_POST:
-        // case EDIT_POST:
-
+        case DELETE_POST:
+            return {
+                ...state,
+                hint: action.paylaod
+            };
+        case UPDATE_POST:
+            return {
+                ...state,
+                hint: action.payload
+            };
         default:return state;
     };
 };

@@ -5,17 +5,16 @@ const initialState = {
     posts: []
 };
 export function homeInit() {
-    return (dispatch) => {
-        fetchGet()
-        .then(res => {
+    return async (dispatch) => {
+        try {
+            const res = await fetchGet();
             dispatch({
                 type: HOME_INIT,
                 payloads: res.items
             });
-        })
-        .catch(res => {
-            console.log(res);
-        });
+        } catch (err) {
+            console.log(err);
+        }
     };
 }
 
@@ -23,7 +22,6 @@ export default function homeReducer(state = initialState, action) {
     switch (action.type){
         case HOME_INIT:
             return {
-                ...state,
                 posts: action.payloads
             };
         default:

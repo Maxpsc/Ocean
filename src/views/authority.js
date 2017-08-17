@@ -20,10 +20,9 @@ function clearAuthFromSession(){
 }
 
 export function login(data, successCallback, errorCallback=() => {}) {
-    return (dispatch, getState) => {
-        //{usernmae:str,password:str}
-        fetchLogin(data)
-        .then(res => {
+    return async (dispatch, getState) => {
+        try {
+            const res = await fetchLogin(data);
             let userStore = {
                 uid: res.items.uid,
                 username: res.items.user_name,
@@ -35,24 +34,22 @@ export function login(data, successCallback, errorCallback=() => {}) {
             });
             saveAuthToSession(userStore);
             successCallback && successCallback(res);
-        })
-        .catch(res => {
-            errorCallback(res);
-        });
+        } catch (err) {
+            console.log(err);
+        }
     };
 };
 export function logout() {
-    return (dispatch) => {
-        fetchLogout()
-        .then(res => {
+    return async (dispatch) => {
+        try {
+            await fetchLogout();
             dispatch({
                 type: LOG_OUT
             });
             clearAuthFromSession();
-        })
-        .catch(res => {
-            console.log(res);
-        });
+        } catch(err) {
+            console.log(err);
+        }
     };
 };
 export default function authorityReducer(state = initialState, action) {

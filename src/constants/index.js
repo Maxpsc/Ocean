@@ -9,8 +9,8 @@ export const REGISTER = 'REGISTER';
 export const PUBLIC_POST = 'PUBLIC_POST';
 export const GET_POST = 'GET_POST';
 export const DELETE_POST = 'DELETE_POST';
-export const EDIT_POST = 'EDIT_POST';
+export const UPDATE_POST = 'UPDATE_POST';
 
 export const GET_USERS = 'GET_USERS';
 export const DELETE_USER = 'DELETE_USER';
-export const EDIT_USER = 'EDIT_USER';
+export const UPDATE_USER = 'UPDATE_USER';

@@ -9,6 +9,6 @@ export function fetchPublic(data){
 export function fetchDelete(data){
     return fetch('/api/posts/delete','POST',data);
 }
-export function fetchEdit(data){
+export function fetchUpdate(data){
     return fetch('/api/posts/update','POST',data);
 }

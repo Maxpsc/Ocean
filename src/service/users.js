@@ -8,6 +8,6 @@ export function fetchDelete(data) {
     return fetch('/api/users/delete','POST',data);
 };
 
-export function fetchEdit(data) {
+export function fetchUpdate(data) {
     return fetch('/api/users/update','POST',data);
 };
