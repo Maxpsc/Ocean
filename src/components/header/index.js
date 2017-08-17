@@ -76,8 +76,10 @@ class Header extends Component {
         this.setState({dialog: false});
     }
     handleLogout() {
-        this.props.logout();
+        const { history, logout } = this.props;
+        logout();
         this.hideDialog();
+        history.push('/');
     }
     render() {
         const { history, identity } = this.props;

@@ -27,11 +27,12 @@ const packJSON = (items,code=0) => {
 // api settings
 module.exports = (app) => {
     //cors
-    app.all('/api/*', (req,res,next) => {
-        res.header("Access-Control-Allow-Origin", "*");
+    app.all('/*', (req,res,next) => {
+        res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
         res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.header("Access-Control-Allow-Credentials", true);
+        res.header('Access-Control-Allow-Headers', 'Accept, Content-Type');
+        res.header('X-Powered-By', 'MicroBlog');
         next();
     });
     //get all/one posts
@@ -41,7 +42,7 @@ module.exports = (app) => {
             req.session.destroy();
         }
         Post.get(req.query,(posts) => {
-            res.send(packJSON(posts));
+            res.status(200).json(packJSON(posts)).end();
         });
     });
     //public post
@@ -89,6 +90,7 @@ module.exports = (app) => {
     });
     //delete posts @admin
     app.post('/api/posts/delete', (req,res) => {
+        console.log(req.session);
         if(!req.body.uid || !req.body.username){
             res.send(packJSON('权限错误',8));
         }else{
@@ -135,6 +137,8 @@ module.exports = (app) => {
     });
     //user log in
     app.post('/api/login', (req,res) => {
+        console.log(req);
+        console.log(req.body);
         if(req.body.username==='' || req.body.password===''){
 			console.log('login wrong');
 			res.send(packJSON('登录信息有误',7));
@@ -174,5 +178,16 @@ module.exports = (app) => {
         req.session.destroy();
         console.log(req.session);
         res.send(packJSON('登出成功'));
+    });
+
+    //manage users @admin
+    app.get('/api/users',(req,res) => {
+        let users = [1,2,3,4];
+        res.json(packJSON(users));
+    });
+    app.post('/api/users/update',(req,res) => {
+    });
+    app.post('/api/users/delete',(req,res) => {
+
     });
 };

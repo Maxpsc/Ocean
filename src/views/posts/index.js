@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import { connect } from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { getPosts, deletePosts } from './postsRedux';
 import MTable from 'src/components/shared/MTable';
 
 class AdminPosts extends Component {
@@ -8,32 +10,36 @@ class AdminPosts extends Component {
         super(props);
     }
     componentDidMount() {
-
+        this.props.getPosts();
     }
     render() {
-        let head = ['id','title','content','user'];
-        let posts = [
-            {
-                id:1,
-                title:'213',
-                content:'asdasdasd',
-                user:'psc'
-            },
-            {
-                id:2,
-                title:'aaaaa',
-                content:'asdasdasd',
-                user:'qqq'
-            }
-        ];
+        let head = ['id','title','content','user','time','operation'];
 
+        let {posts,deletePosts} = this.props;
+        console.log(posts);
         return (
             <div className='list-wrap'>
                 admin posts
-                <MTable headList={head} bodyList={posts} deletable={true} editable={false} />
+                <MTable headList={head}
+                    bodyList={posts}
+                    deletable={true}
+                    editable={false}
+                    handleDelete={deletePosts}
+                />
             </div>
         );
     }
 }
-
-export default AdminPosts;
+function mapStateToProps(state){
+    const { posts } = state.postsReducer;
+    return {
+        posts
+    };
+}
+function mapDispatchToProps(dispatch){
+    return {
+        getPosts: bindActionCreators(getPosts,dispatch),
+        deletePosts: bindActionCreators(deletePosts,dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPosts);

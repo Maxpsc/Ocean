@@ -1,25 +1,23 @@
 const host = 'http://localhost:3000';
 
 export default function(url, method='GET', data){
-    console.log(data);
-    let Header = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    };
-    let options = {
+    let headers = new Headers();
+    headers.append('Accept', 'application/json, text/plain, */*');
+    headers.append('Content-Type', 'application/json');
+    let fetchOptions = {
         method: method,
         mode: 'cors',
-        credentials: "same-origin",
-        headers: Header
+        credentials: "include",
+        headers: headers
     };
     if(method === 'POST'){
-        options.body = JSON.stringify(data);
+        fetchOptions.body = JSON.stringify(data);
     }
-
     return new Promise(function(resolve,reject){
-        fetch(`${host}${url}`,options)
+        fetch(`${host}${url}`,fetchOptions)
         .then(res => res.json())
         .then(res => {
+            console.log(res);
             if(res.error_code === 0){
                 resolve(res);
             }else{

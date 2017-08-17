@@ -6,6 +6,8 @@ import homeReducer from 'src/views/home/homeRedux';
 import regReducer from 'src/views/reg/regRedux';
 import loginReducer from 'src/views/login/loginRedux';
 import publicReducer from 'src/views/public/publicRedux';
+import postsReducer from 'src/views/posts/postsRedux';
+import usersReducer from 'src/views/users/usersRedux';
 // import user from './user';
 
 export default combineReducers({
@@ -14,5 +16,7 @@ export default combineReducers({
     regReducer,
     loginReducer,
     publicReducer,
+    postsReducer,
+    usersReducer,
     router: routerReducer
 });

@@ -4,7 +4,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	devtool: "source-map",
+	devtool: "cheap-module-eval-source-map",
 	entry: {
         app: path.join(__dirname, "./src/main.js"),
         vendors:['react','redux','react-redux']
@@ -55,6 +55,11 @@ module.exports = {
 		}
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: JSON.stringify('development')
+			}
+		}),
 	 	new ExtractTextPlugin("bundle.css"),//分离css
         //根据模板自动生成html
         new HtmlWebpackPlugin({
@@ -67,7 +72,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         proxy: {
-            "/api":"http://localhost:3000"
+            "/api":"http://localhost:" + process.env.SERVER_PORT
         }
     }
 };

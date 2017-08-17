@@ -7,7 +7,6 @@ export default class MTable extends Component{
     constructor(props){
         super(props);
         this.state = {
-            bodyList: props.bodyList,
             deleteId: '',
             deleteDialog: false
         };
@@ -23,18 +22,19 @@ export default class MTable extends Component{
         this.setState({deleteDialog: true, deleteId: id});
     }
     confirmDelete() {
-        const { id } = this.state.deleteId;
+        console.log(this.state);
+        let id = this.state.deleteId;
         console.log('delete: '+ id);
-        this.setState({deleteDialog: false});
         this.props.handleDelete(id);
+        this.setState({deleteDialog: false});
     }
     hideDeleteDialog() {
         this.setState({deleteDialog: false});
     }
     render() {
-        const { headList, editable, deletable } = this.props;
-        const { bodyList, deleteId, deleteDialog } = this.state;
-
+        const { bodyList, headList, editable, deletable } = this.props;
+        const { deleteId, deleteDialog } = this.state;
+        console.log(bodyList);
         const deleteActions = [
             <FlatButton
                 label="Cancel"

@@ -3,6 +3,7 @@ const dbConnection = require('./db');
 
 class Post{
     constructor(post) {
+        this.id = post.id;
         this.uid = post.uid;
         this.username = post.username;
     	this.title = post.title;
@@ -63,6 +64,7 @@ Post.get = (query = {}, callback) => {
             let posts = [];
             docs.forEach(function(doc){
                 posts.push(new Post({
+                    id:doc._id,
                     username:doc.username,
                     title:doc.title,
                     content:doc.content,
