@@ -36,6 +36,7 @@ export function login(data, successCallback, errorCallback=() => {}) {
             successCallback && successCallback(res);
         } catch (err) {
             console.log(err);
+            errorCallback && errorCallback(err);
         }
     };
 };

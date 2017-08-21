@@ -48,9 +48,3 @@ export default class MField extends Component {
         );
     }
 }
-MField.propTypes = {
-    value:PropTypes.string.isRequired
-    //hintText,labelText,type
-    //match,errorText,fullWidth, multiLine
-    //onChange
-};

@@ -1,8 +1,15 @@
-import { GET_POST, DELETE_POST, UPDATE_POST } from 'src/constants';
+import { GET_POST, DELETE_POST, UPDATE_POST, EDITING_POST, CLEAR_POST_HINT } from 'src/constants';
 import { fetchGet, fetchDelete, fetchUpdate } from 'src/service/posts';
 
 let initialState = {
     posts: [],
+    editPost: {
+        id:'',
+        title:'',
+        content:'',
+        user:'',
+        create_time:''
+    },
     hint: ''
 };
 export function getPosts(dispatch) {
@@ -19,7 +26,7 @@ export function getPosts(dispatch) {
     };
 };
 
-export function deletePosts(id) {
+export function deletePost(id) {
     return async (dispatch) => {
         try {
             const deleteRes = await fetchDelete({id:id});
@@ -32,25 +39,43 @@ export function deletePosts(id) {
                 type: GET_POST,
                 payload: getRes.items
             });
+            setTimeout(()=> {
+                dispatch({
+                    type: CLEAR_POST_HINT
+                });
+            },2000);
         } catch (error) {
             console.log(error);
         }
     };
 };
 
-export function editPost(id, post) {
+export function editingPost(post) {
+    return (dispatch) => {
+        dispatch({
+            type: EDITING_POST,
+            payload: post
+        });
+    }
+}
+export function saveEditPost(id, post) {
     return async (dispatch) => {
         try {
-            const updateRes = fetchUpdate({id,post});
+            const updateRes = await fetchUpdate({id,post});
             dispatch({
                 type: UPDATE_POST,
-                payload: deleteRes.items
+                payload: updateRes.items
             });
             const getRes = await fetchGet();
             dispatch({
                 type: GET_POST,
                 payload: getRes.items
             });
+            setTimeout(()=> {
+                dispatch({
+                    type: CLEAR_POST_HINT
+                });
+            },2000);
         } catch (err) {
             console.log(err);
         }
@@ -66,13 +91,23 @@ export default function postsReducer (state = initialState, action) {
         case DELETE_POST:
             return {
                 ...state,
-                hint: action.paylaod
+                hint: action.payload
+            };
+        case EDITING_POST:
+            return {
+                ...state,
+                editPost: action.payload
             };
         case UPDATE_POST:
             return {
                 ...state,
                 hint: action.payload
             };
+        case CLEAR_POST_HINT:
+            return {
+                ...state,
+                hint:''
+            }
         default:return state;
     };
 };

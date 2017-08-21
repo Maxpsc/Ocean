@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import QueueAnim from 'rc-queue-anim';
 
 import { login } from '../authority';
+import { md5 } from 'src/service/auth';
 import RaisedButton from 'material-ui/RaisedButton';
 import MField from 'src/components/shared/MField';
 
@@ -26,10 +28,13 @@ class Login extends Component {
         };
     }
     handleSubmit() {
-        let {history,login} = this.props;
+        let { history, login } = this.props;
         console.log(this.props);
-        let {username,password} = this.state;
-        login({username, password},(res) => {
+        let { username, password } = this.state;
+        login({
+            username,
+            'password': md5(password)
+        },(res) => {
             history.push('/');
         },(res) => {
             this.setState({password: '', hint: res.items});
@@ -45,29 +50,33 @@ class Login extends Component {
         const passwordValid = password !== '';
         return (
             <div className="form-box">
-                <h1>Login</h1>
-                <MField
-                    hintText="Username"
-                    labelText="Username"
-                    value={username}
-                    errorText="should more than 3 chars"
-                    required
-                    match={usernameReg}
-                    onChange={this.setValue('username')}
-                /><br />
-                <MField
-                    type="password"
-                    hintText="Password"
-                    labelText="Password"
-                    value={password}
-                    required
-                    onChange={this.setValue('password')}
-                /><br /><br />
-                <RaisedButton
-                    label='Login'
-                    primary={true} disabled={!usernameValid || !passwordValid}
-                    onTouchTap={this.handleSubmit}
-                /><span className="submit-hint">{hint}</span>
+                <QueueAnim>
+                    <h1 key='title'>Login</h1>
+                    <div key="body">
+                        <MField
+                            hintText="Username"
+                            labelText="Username"
+                            value={username}
+                            errorText="should more than 3 chars"
+                            required
+                            match={usernameReg}
+                            onChange={this.setValue('username')}
+                        /><br />
+                        <MField
+                            type="password"
+                            hintText="Password"
+                            labelText="Password"
+                            value={password}
+                            required
+                            onChange={this.setValue('password')}
+                        /><br /><br />
+                        <RaisedButton
+                            label='Login'
+                            primary={true} disabled={!usernameValid || !passwordValid}
+                            onTouchTap={this.handleSubmit}
+                        /><span className="submit-hint">{hint}</span>
+                    </div>
+                </QueueAnim>
             </div>
         );
     }

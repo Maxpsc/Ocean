@@ -19,7 +19,7 @@ export default class Banner extends Component{
         let subTitle;
         if(user.identity === 'guest'){
             subTitle = (
-                <h2>
+                <div className="subTitle">
                     <RaisedButton label="Join us" secondary={true} style={style}
                         onTouchTap={this.handleRoute.bind(null, '/reg')}
                     />
@@ -27,7 +27,7 @@ export default class Banner extends Component{
                     <RaisedButton label="Login" style={style}
                         onTouchTap={this.handleRoute.bind(null, '/login')}
                     />
-            </h2>
+                </div>
             );
         }else{
             subTitle = (<h2>Have a nice day! {user.username}</h2>);
@@ -36,6 +36,8 @@ export default class Banner extends Component{
             <div className="banner">
                 <h1>Welcome to MicroBlog!</h1>
                 {subTitle}
+                <div className="wave"></div>
+                <div className="wave"></div>
             </div>
         );
     }

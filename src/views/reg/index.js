@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 // import { bindActionCreators } from 'redux';
 // import { connect } from 'react-redux';
+import QueueAnim from 'rc-queue-anim';
 
-import { fetchReg } from 'src/service/auth';
+import { fetchReg, md5 } from 'src/service/auth';
 import RaisedButton from 'material-ui/RaisedButton';
 import MField from 'src/components/shared/MField';
 
@@ -27,7 +28,12 @@ export default class Reg extends Component {
     }
     handleSubmit() {
         const { username, password, repassword } = this.state;
-        fetchReg({ username, password, repassword, 'identity':'user' })
+        fetchReg({
+            username,
+            'password': md5(password),
+            'repassword': md5(repassword),
+            'identity':'user'
+        })
         .then(res => {
             this.setState({password:'',repassword:'',hint:res.items});
         })
@@ -47,42 +53,46 @@ export default class Reg extends Component {
         const repasswordValid = password === repassword;
         return (
             <div className="form-box">
-                <h1>Reg</h1>
-                <MField
-                    hintText="Username"
-                    labelText="Username"
-                    value={username}
-                    errorText="should more than 3 chars"
-                    required
-                    match={/^\w{3}\w*$/}
-                    onChange={this.setValue('username')}
-                /><br />
-                <MField
-                    type="password"
-                    hintText="Password"
-                    labelText="Password"
-                    value={password}
-                    errorText="should more than 6 chars"
-                    required
-                    match={/^\w{6}\w*$/}
-                    onChange={this.setValue('password')}
-                /><br />
-                <MField
-                    type="password"
-                    hintText="Repassword"
-                    labelText="Repassword"
-                    value={repassword}
-                    errorText="please repeat your password"
-                    required
-                    match={'='+password}
-                    onChange={this.setValue('repassword')}
-                /><br /><br />
-                <RaisedButton
-                    label="JOIN US!"
-                    primary={true}
-                    disabled={!usernameValid || !passwordValid || !repasswordValid}
-                    onTouchTap={this.handleSubmit}
-                /><span className="submit-hint">{hint}</span>
+                <QueueAnim>
+                    <h1 key="title">Reg</h1>
+                    <div key="body">
+                        <MField
+                            hintText="Username"
+                            labelText="Username"
+                            value={username}
+                            errorText="should more than 3 chars"
+                            required
+                            match={/^\w{3}\w*$/}
+                            onChange={this.setValue('username')}
+                        /><br />
+                        <MField
+                            type="password"
+                            hintText="Password"
+                            labelText="Password"
+                            value={password}
+                            errorText="should more than 6 chars"
+                            required
+                            match={/^\w{6}\w*$/}
+                            onChange={this.setValue('password')}
+                        /><br />
+                        <MField
+                            type="password"
+                            hintText="Repassword"
+                            labelText="Repassword"
+                            value={repassword}
+                            errorText="please repeat your password"
+                            required
+                            match={'='+password}
+                            onChange={this.setValue('repassword')}
+                        /><br /><br />
+                        <RaisedButton
+                            label="JOIN US!"
+                            primary={true}
+                            disabled={!usernameValid || !passwordValid || !repasswordValid}
+                            onTouchTap={this.handleSubmit}
+                        /><span className="submit-hint">{hint}</span>
+                    </div>
+                </QueueAnim>
             </div>
         );
     }

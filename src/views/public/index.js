@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import MField from 'src/components/shared/MField';
+import QueueAnim from 'rc-queue-anim';
 
 class Public extends Component {
     constructor(props){
@@ -64,30 +65,34 @@ class Public extends Component {
         ];
         return (
             <div className="public-box form-box">
-                <h1>Public your blog</h1>
-                <MField
-                    hintText="Title"
-                    labelText="Title"
-                    value={title}
-                    required
-                    onChange={this.setValue('title')}
-                    fullWidth={true}
-                /><br />
-                <MField
-                    hintText="Content"
-                    labelText="Content"
-                    value={content}
-                    multiLine={true}
-                    required
-                    onChange={this.setValue('content')}
-                    fullWidth={true}
-                /><br /><br />
-                <RaisedButton
-                    label="Public!"
-                    primary={true}
-                    disabled={!titleValid || !contentValid}
-                    onTouchTap={this.handleSubmit}
-                /><span className="submit-hint">{hint}</span>
+                <QueueAnim>
+                    <h1 key="title">Public your blog</h1>
+                    <div key="body">
+                        <MField
+                            hintText="Title"
+                            labelText="Title"
+                            value={title}
+                            required
+                            onChange={this.setValue('title')}
+                            fullWidth={true}
+                        /><br />
+                        <MField
+                            hintText="Content"
+                            labelText="Content"
+                            value={content}
+                            multiLine={true}
+                            required
+                            onChange={this.setValue('content')}
+                            fullWidth={true}
+                        /><br /><br />
+                        <RaisedButton
+                            label="Public!"
+                            primary={true}
+                            disabled={!titleValid || !contentValid}
+                            onTouchTap={this.handleSubmit}
+                        /><span className="submit-hint">{hint}</span>
+                    </div>
+                </QueueAnim>
 
                 <Dialog
                   actions={dialogAction}

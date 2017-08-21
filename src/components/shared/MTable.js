@@ -1,40 +1,55 @@
 import React, { Component } from 'react';
+import { dateFormat } from 'src/service/format';
 
+import MField from './MField';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import QueueAnim from 'rc-queue-anim';
 
 export default class MTable extends Component{
     constructor(props){
         super(props);
         this.state = {
             deleteId: '',
-            deleteDialog: false
+            deleteDialog: false,
+            editDialog: false
         };
         this.beginEdit = this.beginEdit.bind(this);
         this.beginDelete = this.beginDelete.bind(this);
         this.confirmDelete = this.confirmDelete.bind(this);
+        this.confirmEdit = this.confirmEdit.bind(this);
         this.hideDeleteDialog = this.hideDeleteDialog.bind(this);
+        this.hideEditDialog = this.hideEditDialog.bind(this);
     }
     beginEdit(index){
-        console.log(index);
+        this.props.handleBeginEdit(index);
+        this.setState({editDialog: true});
     }
     beginDelete(id){
         this.setState({deleteDialog: true, deleteId: id});
     }
     confirmDelete() {
-        console.log(this.state);
         let id = this.state.deleteId;
         console.log('delete: '+ id);
         this.props.handleDelete(id);
         this.setState({deleteDialog: false});
     }
+    confirmEdit() {
+        console.log('confirm');
+        const { handleSave, editItem } = this.props;
+        let id = editItem.id || editItem.uid;
+        handleSave(id, editItem);
+        this.setState({editDialog: false});
+    }
     hideDeleteDialog() {
         this.setState({deleteDialog: false});
     }
+    hideEditDialog() {
+        this.setState({editDialog: false});
+    }
     render() {
-        const { bodyList, headList, editable, deletable } = this.props;
-        const { deleteId, deleteDialog } = this.state;
-        console.log(bodyList);
+        const { bodyList, headList, editable, deletable, editTitle } = this.props;
+        const { deleteId, deleteDialog, editDialog } = this.state;
         const deleteActions = [
             <FlatButton
                 label="Cancel"
@@ -46,6 +61,17 @@ export default class MTable extends Component{
                 onTouchTap={this.confirmDelete}
               />
         ];
+        const editActions = [
+            <FlatButton
+                label="Cancel"
+                onTouchTap={this.hideEditDialog}
+              />,
+              <FlatButton
+                label="Save"
+                primary={true}
+                onTouchTap={this.confirmEdit}
+              />
+        ];
         let head = headList.map((item) => (
             <th key={item}>{item}</th>
         ));
@@ -53,16 +79,23 @@ export default class MTable extends Component{
         let body = bodyList.map((item,index) => {
             let props = [];
             for(let i in item){
-                props.push(<td key={`${item.id}${item[i]}`}>{item[i]}</td>);
+                console.log(i);
+                if(i === 'create_time'){
+                    props.push(
+                        <td key={`${i}-${index}`}>{ dateFormat(new Date(parseInt(item[i]))) }</td>
+                    );
+                }else{
+                    props.push(<td key={`${i}-${index}`}>{item[i]}</td>);
+                }
             }
             let buttons = (
-                <td>
+                <td key={`buttons-${index}`}>
                     { editable ? <FlatButton label="Edit" primary={true} onTouchTap={this.beginEdit.bind(null,index)}/> : null }
-                    { deletable ? <FlatButton label="Delete" secondary={true} onTouchTap={this.beginDelete.bind(null,item.id)}/> : null }
+                    { deletable ? <FlatButton label="Delete" secondary={true} onTouchTap={this.beginDelete.bind(null,item.id || item.uid)}/> : null }
                 </td>
             );
             return (
-                <tr key={item.id}>
+                <tr key={item.id || item.uid}>
                     { props }
                     { (editable || deletable) ? buttons : null }
                 </tr>
@@ -70,14 +103,14 @@ export default class MTable extends Component{
         });
         return (
             <div className="MTable">
-                <table>
-                    <thead>
+                <QueueAnim component="table">
+                    <thead key="head">
                         <tr>{ head }</tr>
                     </thead>
-                    <tbody>
+                    <QueueAnim component="tbody" delay={200}>
                         { body }
-                    </tbody>
-                </table>
+                    </QueueAnim>
+                </QueueAnim>
                 { deletable ? (
                     <Dialog
                       modal={true}
@@ -85,6 +118,17 @@ export default class MTable extends Component{
                       open={deleteDialog}
                     >
                       Are your sure to delete Id: {deleteId} ?
+                    </Dialog>
+                ) : null }
+                { editable ? (
+                    <Dialog
+                        title={editTitle}
+                        modal={true}
+                        actions={editActions}
+                        open={editDialog}
+                        autoScrollBodyContent={true}
+                    >
+                        { this.props.children }
                     </Dialog>
                 ) : null }
             </div>

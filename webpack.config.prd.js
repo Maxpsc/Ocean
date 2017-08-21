@@ -11,7 +11,7 @@ module.exports = {
     },
 	output: {
 		path: path.join(__dirname, "./dist"),
-		publicPath: path.join(__dirname, "./dist"),
+		// publicPath: path.join(__dirname, "./dist"),
 		filename: "[name].bundle.js"
 	},
     //不需要构建到bundle的类库,需要在html手动引入
@@ -47,9 +47,9 @@ module.exports = {
 	      test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
 	      use:[
 	      		{
-	      			loader:"file-loader",
-	      			query: {
-						name: '/img/[name].[ext]'
+	      			loader:"url-loader",
+	      			options: {
+						limit: 8192
 					}
 	      		}
 	      ]

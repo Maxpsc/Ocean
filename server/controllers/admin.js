@@ -7,13 +7,18 @@ import uuidv1 from 'uuid/v1';//生成唯一id, v1基于timestamp,v4基于random
 class Admin{
     constructor(){
         this.login = this.login.bind(this);
-        this.Md5 = this.Md5.bind(this);
+        this.sha1 = this.sha1.bind(this);
+        this.encryption = this.encryption.bind(this);
         this.register = this.register.bind(this);
     }
-    //MD5 16进制加密
-    Md5(password){
-        let md5 = crypto.createHash('md5');
-        return md5.update(password).digest('hex');
+    //sha1加密
+    sha1(password){
+        let sha1 = crypto.createHash('sha1');
+        return sha1.update(password).digest('hex');
+    }
+    //custom encryption
+    encryption(password){
+        return this.sha1('MICROBLOG:' + this.sha1(password));
     }
     async login(req, res, next){
         const { username, password } = req.body;
@@ -24,7 +29,7 @@ class Admin{
         } catch (err) {
             res.send(packJSON(err,7));
         }
-        const newPassword = this.Md5(password);
+        const newPassword = this.encryption(password);
 
         try {
             const user = await UserModel.findOne({user_name: username, password: newPassword});
@@ -65,7 +70,7 @@ class Admin{
             if(user){
                 res.send(packJSON('用户名已存在',6));
             }else{
-                const newPassword = this.Md5(password);
+                const newPassword = this.encryption(password);
                 const newUser = {
                     uid: uuidv1(),
                     user_name: username,

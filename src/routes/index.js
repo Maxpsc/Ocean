@@ -31,16 +31,14 @@ class MainApp extends Component {
                             <Route path="/" exact component={Home} />
                             <Route path="/reg" component={Reg} />
                             <Route path="/login" component={Login} />
-
+                            {/*
                             <Route path="/public" component={Public} />
                             <Route path="/posts" component={AdminPosts} />
                             <Route path="/users" component={AdminUsers} />
-                            {/*
-                                <UserRoute path="/public" component={Public} identity={identity} />
-                                <AdminRoute path="/posts" component={AdminPosts} identity={identity} />
-                                <AdminRoute path="/users" component={AdminUsers} identity={identity} />
                             */}
-
+                            <UserRoute path="/public" component={Public} identity={identity} />
+                            <AdminRoute path="/posts" component={AdminPosts} identity={identity} />
+                            <AdminRoute path="/users" component={AdminUsers} identity={identity} />
                             <Route component={NoMatch} />
                         </Switch>
                     </div>
