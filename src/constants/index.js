@@ -18,3 +18,5 @@ export const DELETE_USER = 'DELETE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const EDITING_USER = 'EDITING_USER';
 export const CLEAR_USER_HINT = 'CLEAR_USER_HINT';
+
+export const CHANGE_STYLE = 'CHANGE_STYLE';

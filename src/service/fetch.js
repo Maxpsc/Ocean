@@ -17,7 +17,6 @@ export default function(url, method='GET', data){
         fetch(`${host}${url}`,fetchOptions)
         .then(res => res.json())
         .then(res => {
-            console.log(res);
             if(res.error_code === 0){
                 resolve(res);
             }else{

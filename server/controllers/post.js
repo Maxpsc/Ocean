@@ -6,9 +6,15 @@ class Post {
     constructor(){
     }
     async get(req,res,next) {
-        const query = req.query;
-        console.log(query);
-        const posts = await PostModel.find().sort({'create_time': -1});
+        const { id, uid } = req.query;
+        let posts;
+        if(uid){
+            posts = await PostModel.find({uid: uid}).sort({'create_time': -1});
+        }else if(id){
+            posts = await PostModel.findOne({id: id});
+        }else{
+            posts = await PostModel.find().sort({'create_time': -1});
+        }
         res.send(packJSON(posts));
     }
     async public(req,res,next) {

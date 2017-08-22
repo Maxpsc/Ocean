@@ -18,7 +18,7 @@ actions:
         get_posts
     public:
         public
-        
+
 router:
     /
     /reg
@@ -27,4 +27,11 @@ router:
     /user:id
 
     /*other  notFoundPage
-  
+
+userDetails:
+    avatar
+    username - userid
+    
+    setting(username, password)
+    setting(posts)
+    setting(system-version, theme)

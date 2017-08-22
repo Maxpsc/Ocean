@@ -2,6 +2,7 @@ import express from 'express';
 import Admin from '../controllers/admin';
 import Post from '../controllers/post';
 import User from '../controllers/user';
+import UserDetail from '../controllers/userDetail';
 import { packJSON } from '../controllers/base';
 const router = express.Router();
 
@@ -19,6 +20,13 @@ router.use('/api', function(req,res,next){
         res.send(packJSON('用户权限错误',8));
     }
 });
+
+//user management
+router.get('/api/user/detail', UserDetail.getDetail);
+router.post('/api/user/update', UserDetail.update);
+router.get('/api/user/posts', UserDetail.getPosts);
+
+//for admin
 router.post('/api/posts/public', Post.public);
 router.post('/api/posts/update', Post.update);
 router.post('/api/posts/delete', Post.delete);

@@ -51,31 +51,31 @@ class Login extends Component {
         return (
             <div className="form-box">
                 <QueueAnim>
-                    <h1 key='title'>Login</h1>
-                    <div key="body">
-                        <MField
-                            hintText="Username"
-                            labelText="Username"
-                            value={username}
-                            errorText="should more than 3 chars"
-                            required
-                            match={usernameReg}
-                            onChange={this.setValue('username')}
-                        /><br />
-                        <MField
-                            type="password"
-                            hintText="Password"
-                            labelText="Password"
-                            value={password}
-                            required
-                            onChange={this.setValue('password')}
-                        /><br /><br />
-                        <RaisedButton
-                            label='Login'
-                            primary={true} disabled={!usernameValid || !passwordValid}
-                            onTouchTap={this.handleSubmit}
-                        /><span className="submit-hint">{hint}</span>
-                    </div>
+                <h1 key='title'>Login</h1>
+                <div key="body">
+                    <MField
+                        hintText="Username"
+                        labelText="Username"
+                        value={username}
+                        errorText="should more than 3 chars"
+                        required
+                        match={usernameReg}
+                        onChange={this.setValue('username')}
+                    /><br />
+                    <MField
+                        type="password"
+                        hintText="Password"
+                        labelText="Password"
+                        value={password}
+                        required
+                        onChange={this.setValue('password')}
+                    /><br /><br />
+                    <RaisedButton
+                        label='Login'
+                        primary={true} disabled={!usernameValid || !passwordValid}
+                        onTouchTap={this.handleSubmit}
+                    /><span className="submit-hint">{hint}</span>
+                </div>
                 </QueueAnim>
             </div>
         );

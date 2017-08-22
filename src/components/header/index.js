@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import {logout} from 'src/views/authority';
+import Sidebar from 'src/components/sidebar';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -82,7 +83,7 @@ class Header extends Component {
         history.push('/');
     }
     render() {
-        const { history, identity } = this.props;
+        const { history, identity, ...user } = this.props;
         const { drawer } = this.state;
         const handleTitleTouch = () => {
             history.push('/');
@@ -116,25 +117,42 @@ class Header extends Component {
                     onTitleTouchTap={handleTitleTouch}
                     iconElementRight={elemRight}
                 />
-            <Drawer open={drawer} openSecondary={true}>
-                drawer
-            </Drawer>
-            <Dialog
-              actions={dialogActions}
-              modal={true}
-              open={this.state.dialog}
-              onRequestClose={this.hideDialog}
-            >
-              Make sure to logout?
-            </Dialog>
+                <Drawer
+                    open={drawer}
+                    width="40%"
+                    docked={false}
+                    onRequestChange={(drawer) => this.setState({drawer})}
+                >
+                    <Sidebar
+                        uid={user.uid}
+                        username={user.username}
+                        avatar={user.avatar}
+                        password={user.password}
+                        identity={identity}
+                        handleHide={() => this.setState({drawer:false})}
+                    />
+                </Drawer>
+                <Dialog
+                  actions={dialogActions}
+                  modal={true}
+                  open={this.state.dialog}
+                  onRequestClose={this.hideDialog}
+                >
+                  Make sure to logout?
+                </Dialog>
             </div>
         );
     }
 };
 
 function mapStateToProps(state){
+    const { identity, uid, username, avatar, password } = state.authorityReducer;
     return {
-        identity: state.authorityReducer.identity
+        identity,
+        uid,
+        username,
+        avatar,
+        password
     };
 }
 function mapDispatchToProps(dispatch){

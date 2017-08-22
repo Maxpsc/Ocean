@@ -33,18 +33,18 @@ export default class MField extends Component {
         const { value, hintText, labelText, fullWidth, multiLine, rows, rowsMax, type } = this.props;
         const { errorText } = this.state;
         return (
-            <TextField
-                hintText={hintText}
-                floatingLabelText={labelText}
-                type={type}
-                value={value}
-                errorText={errorText}
-                onChange={e => this.changeValue(e)}
-                fullWidth={fullWidth}
-                multiLine={multiLine}
-                rows={rows}
-                rowsMax={rowsMax}
-            />
+                <TextField
+                    hintText={hintText}
+                    floatingLabelText={labelText}
+                    type={type}
+                    value={value}
+                    errorText={errorText}
+                    onChange={e => this.changeValue(e)}
+                    fullWidth={fullWidth}
+                    multiLine={multiLine}
+                    rows={rows}
+                    rowsMax={rowsMax}
+                />
         );
     }
 }

@@ -8,9 +8,10 @@ import loginReducer from 'src/views/login/loginRedux';
 import publicReducer from 'src/views/public/publicRedux';
 import postsReducer from 'src/views/posts/postsRedux';
 import usersReducer from 'src/views/users/usersRedux';
-// import user from './user';
+import styleReducer from './styleReducer';
 
 export default combineReducers({
+    styleReducer,
     authorityReducer,
     homeReducer,
     regReducer,

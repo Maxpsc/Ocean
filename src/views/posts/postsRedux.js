@@ -12,10 +12,10 @@ let initialState = {
     },
     hint: ''
 };
-export function getPosts(dispatch) {
+export function getPosts(id) {
     return async (dispatch) => {
         try {
-            const res = await fetchGet();
+            const res = await fetchGet(id);
             dispatch({
                 type: GET_POST,
                 payload: res.items

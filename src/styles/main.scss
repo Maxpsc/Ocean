@@ -118,7 +118,38 @@ body{
     text-align: left;
 }
 .list-wrap{
-    padding:1.2rem;
+    padding:2.2rem;
+}
+.sideBar{
+    h5{
+        text-align: right;
+        padding:0 1rem;
+        line-height: 36px;
+        font-size: 16px;
+        font-weight: normal;
+        color:darken(#00bcd4,20%);
+    }
+    .avatar-box{
+        background-color: #00bcd4;
+        padding:1rem;
+        overflow: hidden;
+        img{
+            float:left;
+            display: block;
+            width:4rem;
+            height:4rem;
+            border: #000 solid 1px;
+            border-radius: 30%;
+            margin-right:16px;
+        }
+        h1{
+            font-size: 18px;
+        }
+        h3{
+            font-size: 14px;
+            font-weight: normal;
+        }
+    }
 }
 .footer{
     position:absolute;

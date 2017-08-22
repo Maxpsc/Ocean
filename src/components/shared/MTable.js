@@ -3,9 +3,14 @@ import { dateFormat } from 'src/service/format';
 
 import MField from './MField';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import Divider from 'material-ui/Divider';
 import QueueAnim from 'rc-queue-anim';
 
+const buttonStyle = {
+    margin: 6
+};
 export default class MTable extends Component{
     constructor(props){
         super(props);
@@ -30,12 +35,10 @@ export default class MTable extends Component{
     }
     confirmDelete() {
         let id = this.state.deleteId;
-        console.log('delete: '+ id);
         this.props.handleDelete(id);
         this.setState({deleteDialog: false});
     }
     confirmEdit() {
-        console.log('confirm');
         const { handleSave, editItem } = this.props;
         let id = editItem.id || editItem.uid;
         handleSave(id, editItem);
@@ -79,7 +82,6 @@ export default class MTable extends Component{
         let body = bodyList.map((item,index) => {
             let props = [];
             for(let i in item){
-                console.log(i);
                 if(i === 'create_time'){
                     props.push(
                         <td key={`${i}-${index}`}>{ dateFormat(new Date(parseInt(item[i]))) }</td>
@@ -90,8 +92,8 @@ export default class MTable extends Component{
             }
             let buttons = (
                 <td key={`buttons-${index}`}>
-                    { editable ? <FlatButton label="Edit" primary={true} onTouchTap={this.beginEdit.bind(null,index)}/> : null }
-                    { deletable ? <FlatButton label="Delete" secondary={true} onTouchTap={this.beginDelete.bind(null,item.id || item.uid)}/> : null }
+                    { editable ? <RaisedButton label="Edit" primary={true} style={buttonStyle} onTouchTap={this.beginEdit.bind(null,index)}/> : null }
+                    { deletable ? <RaisedButton label="Delete" secondary={true} style={buttonStyle} onTouchTap={this.beginDelete.bind(null,item.id || item.uid)}/> : null }
                 </td>
             );
             return (

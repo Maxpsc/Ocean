@@ -1,4 +1,5 @@
 import UserModel from '../models/user';
+import UserDetailModel from '../models/userDetail';
 import { packJSON } from './base';
 
 class User{
@@ -18,6 +19,10 @@ class User{
         if(!uid || !user) res.send(packJSON('参数错误',6));
         try {
             await UserModel.findOneAndUpdate({uid: uid}, user);
+            await UserDetailModel.findOneAndUpdate({uid: uid}, {
+                user_name: user.user_name,
+                password: user.password
+            });
             res.send(packJSON('user更新成功'));
         } catch (error) {
             res.send(packJSON(error,9))

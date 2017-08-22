@@ -1,5 +1,6 @@
 import { LOG_IN, LOG_OUT, CHECK_AUTH } from 'src/constants';
 import { fetchLogin, fetchLogout } from 'src/service/auth';
+import { fetchDetail } from 'src/service/user';
 
 let initialState;
 if(sessionStorage.getItem('auth')){
@@ -8,7 +9,9 @@ if(sessionStorage.getItem('auth')){
     initialState = {
         identity: 'guest',
         uid: '',
-        username: ''
+        username: '',
+        avator: '',
+        password: ''
     };
 }
 //save userData to sessionStorage
@@ -22,20 +25,22 @@ function clearAuthFromSession(){
 export function login(data, successCallback, errorCallback=() => {}) {
     return async (dispatch, getState) => {
         try {
-            const res = await fetchLogin(data);
+            const authRes = await fetchLogin(data);
+            const userRes = await fetchDetail({uid: authRes.items.uid});
             let userStore = {
-                uid: res.items.uid,
-                username: res.items.user_name,
-                identity: res.items.identity
+                uid: authRes.items.uid,
+                username: authRes.items.user_name,
+                identity: authRes.items.identity,
+                avatar: userRes.items.avatar,
+                password: userRes.items.password
             };
             dispatch({
                 type: LOG_IN,
                 payload: userStore
             });
             saveAuthToSession(userStore);
-            successCallback && successCallback(res);
+            successCallback && successCallback(authRes);
         } catch (err) {
-            console.log(err);
             errorCallback && errorCallback(err);
         }
     };
@@ -65,13 +70,17 @@ export default function authorityReducer(state = initialState, action) {
             return {
                 identity: action.payload.identity,
                 username: action.payload.username,
-                uid: action.payload.uid
+                uid: action.payload.uid,
+                password: action.payload.password,
+                avatar: action.payload.avatar
             };
         case LOG_OUT:
             return {
                 identity: 'guest',
+                uid: '',
                 username: '',
-                uid: ''
+                avator: '',
+                password: ''
             };
         default:
             return state;
