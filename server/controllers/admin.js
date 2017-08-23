@@ -1,24 +1,12 @@
 import UserModel from '../models/user';
 import UserDetailModel from '../models/userDetail';
-import { packJSON } from './base';
-import crypto from 'crypto';//用于加密生成各种散列
+import { packJSON, encryption } from './base';
 import uuidv1 from 'uuid/v1';//生成唯一id, v1基于timestamp,v4基于random
 
 class Admin{
     constructor(){
         this.login = this.login.bind(this);
-        this.sha1 = this.sha1.bind(this);
-        this.encryption = this.encryption.bind(this);
         this.register = this.register.bind(this);
-    }
-    //sha1加密
-    sha1(password){
-        let sha1 = crypto.createHash('sha1');
-        return sha1.update(password).digest('hex');
-    }
-    //custom encryption
-    encryption(password){
-        return this.sha1('MICROBLOG:' + this.sha1(password));
     }
     async login(req, res, next){
         const { username, password } = req.body;
@@ -29,7 +17,7 @@ class Admin{
         } catch (err) {
             res.send(packJSON(err,7));
         }
-        const newPassword = this.encryption(password);
+        const newPassword = encryption(password);
 
         try {
             const user = await UserModel.findOne({user_name: username, password: newPassword});
@@ -70,7 +58,7 @@ class Admin{
             if(user){
                 res.send(packJSON('用户名已存在',6));
             }else{
-                const newPassword = this.encryption(password);
+                const newPassword = encryption(password);
                 const newUser = {
                     uid: uuidv1(),
                     user_name: username,

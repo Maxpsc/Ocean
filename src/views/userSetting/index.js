@@ -1,23 +1,52 @@
 import React, {Component} from 'react';
-// import { bindActionCreators } from 'redux';
-// import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import QueueAnim from 'rc-queue-anim';
+import Dropzone from 'react-dropzone';
 
-import { fetchReg, md5 } from 'src/service/auth';
+import { avatarUrl } from 'src/host';
+import { md5 } from 'src/service/auth';
+import { login } from 'src/views/authority';
+import { uploadAvatar, fetchUpdate } from 'src/service/user';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import MField from 'src/components/shared/MField';
 
-export default class UserSetting extends Component {
+const dropZoneStyle = {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    border: '#00bcd4 dashed 4px',
+    borderRadius: 10,
+    minWidth: 200,
+    width: '25%',
+    minHeight: 100,
+    height:'12vh',
+    padding:10,
+    cursor: 'pointer'
+};
+const h1Style = {
+    textAlign:'center',
+    fontSize:'1.2rem',
+    marginBottom: 4
+};
+const pStyle = {
+    fontSize:'0.9rem'
+};
+class UserSetting extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            repassword: '',
-            hint: ''
+            username: props.username,
+            avatar: props.avatar,
+            opassword: '',
+            npassword: '',
+            hint: '',
+            btnDisabled: false
         };
         this.setValue = this.setValue.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.showHint = this.showHint.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
     }
     setValue(key) {
         return (val) => {
@@ -26,35 +55,70 @@ export default class UserSetting extends Component {
             this.setState(nState);
         };
     }
-    handleSubmit() {
-        const { username, password, repassword } = this.state;
-        fetchReg({
-            username,
-            'password': md5(password),
-            'repassword': md5(repassword),
-            'identity':'user'
-        })
-        .then(res => {
-            this.setState({password:'',repassword:'',hint:res.items});
-        })
-        .catch(res => {
-            this.setState({password:'',repassword:'',hint:res.items});
-        });
+    showHint(err){
+        this.setState({hint: err, opassword: '',npassword: '', btnDisabled: true});
         setTimeout(() => {
-            this.setState({hint:''});
+            this.setState({hint: '', opassword: '',npassword: '', btnDisabled: false});
         },2000);
     }
+    handleUpload(files) {
+        console.log(files);
+        uploadAvatar(files[0])
+        .then(res => {
+            this.setState({avatar: res.items.filename});
+        })
+        .catch(res => {
+            this.showHint(res);
+        });
+    }
+    handleUpdate() {
+        const { uid, login } = this.props;
+        const { username, avatar, opassword, npassword } = this.state;
+        console.log('save',this.state);
+        fetchUpdate({
+            uid,
+            opassword: md5(opassword),
+            user:{
+                user_name: username,
+                avatar,
+                password: md5(npassword)
+            }
+        })
+        .then(res => {
+            this.showHint(res.items);
+            //reset authorityReducer
+            login({
+                username,
+                password: md5(npassword)
+            })
+        })
+        .catch(res => {
+            this.showHint(res.items);
+        });
+    }
     render() {
-        const { username, password, repassword, hint } = this.state;
+        const { username, avatar, opassword, npassword, hint, btnDisabled } = this.state;
         const usernameReg = /^\w{3}\w*$/;
         const passwordReg = /^\w{6}\w*$/;
         const usernameValid = usernameReg.test(username);
-        const passwordValid = passwordReg.test(password);
-        const repasswordValid = password === repassword;
+        const opasswordValid = passwordReg.test(opassword);
+        const npasswordValid = passwordReg.test(npassword);
+
         return (
             <div className="form-box">
                 <QueueAnim>
-                    <h1 key="title">Reg</h1>
+                    <img className="avatar-img" src={avatarUrl + avatar} key="avatar"></img>
+                    <Dropzone
+                        style={dropZoneStyle}
+                        multiple={false}
+                        accept="image/jpg,image/jpeg,image/png"
+                        onDrop={this.handleUpload}
+                    >
+                        <h1 style={h1Style}>Upload Avatar</h1>
+                        <p style={pStyle}>Drop an image or click to select an image to upload.</p>
+                        <p style={pStyle}>Support: jpg, jpeg, png</p>
+                    </Dropzone>
+
                     <div key="body">
                         <MField
                             hintText="Username"
@@ -62,34 +126,30 @@ export default class UserSetting extends Component {
                             value={username}
                             errorText="should more than 3 chars"
                             required
-                            match={/^\w{3}\w*$/}
+                            match={usernameReg}
                             onChange={this.setValue('username')}
                         /><br />
                         <MField
                             type="password"
-                            hintText="Password"
-                            labelText="Password"
-                            value={password}
-                            errorText="should more than 6 chars"
+                            hintText="Old Password"
+                            labelText="Old Password"
+                            value={opassword}
                             required
-                            match={/^\w{6}\w*$/}
-                            onChange={this.setValue('password')}
+                            onChange={this.setValue('opassword')}
                         /><br />
                         <MField
                             type="password"
-                            hintText="Repassword"
-                            labelText="Repassword"
-                            value={repassword}
-                            errorText="please repeat your password"
+                            hintText="New Password"
+                            labelText="New Password"
+                            value={npassword}
                             required
-                            match={'='+password}
-                            onChange={this.setValue('repassword')}
+                            onChange={this.setValue('npassword')}
                         /><br /><br />
                         <RaisedButton
-                            label="JOIN US!"
+                            label='Update'
                             primary={true}
-                            disabled={!usernameValid || !passwordValid || !repasswordValid}
-                            onTouchTap={this.handleSubmit}
+                            disabled={!usernameValid || !opasswordValid || !npasswordValid || btnDisabled}
+                            onTouchTap={this.handleUpdate}
                         /><span className="submit-hint">{hint}</span>
                     </div>
                 </QueueAnim>
@@ -97,3 +157,19 @@ export default class UserSetting extends Component {
         );
     }
 };
+
+function mapStateToProps(state){
+    const { uid, username, avatar, password } = state.authorityReducer;
+    return {
+        uid,
+        username,
+        avatar,
+        password
+    };
+}
+function mapDispatchToProps(dispatch){
+    return {
+        login: bindActionCreators(login, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(UserSetting);

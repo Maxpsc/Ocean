@@ -13,7 +13,8 @@ class UserPosts extends Component {
         this.beginEdit = this.beginEdit.bind(this);
     }
     componentDidMount() {
-        this.props.getPosts();
+        const { getPosts, uid } = this.props;
+        getPosts({uid: uid});
     }
     setValue(key) {
         return (val) => {
@@ -27,7 +28,7 @@ class UserPosts extends Component {
         editingPost(posts[index]);
     }
     render() {
-        let head = ['id','title','content','user','create_time','operation'];
+        let head = ['id','title','content','user','create_time'];
         let { posts, editPost, deletePost, saveEditPost, hint } = this.props;
         // console.log(posts);
         const nPosts = posts.map((post) => {
@@ -46,8 +47,8 @@ class UserPosts extends Component {
                 <h5>{ hint }</h5>
                 <MTable headList={head}
                     bodyList={nPosts}
-                    deletable={true}
-                    editable={true}
+                    deletable={false}
+                    editable={false}
                     editItem={editPost}
                     editTitle="Edit Post"
                     handleDelete={deletePost}
@@ -77,8 +78,10 @@ class UserPosts extends Component {
     }
 }
 function mapStateToProps(state){
+    const { uid } = state.authorityReducer;
     const { posts, editPost, hint } = state.postsReducer;
     return {
+        uid,
         posts,
         editPost,
         hint

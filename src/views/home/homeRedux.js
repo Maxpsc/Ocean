@@ -7,7 +7,7 @@ const initialState = {
 export function homeInit() {
     return async (dispatch) => {
         try {
-            const res = await fetchGet();
+            const res = await fetchGet({});
             dispatch({
                 type: HOME_INIT,
                 payloads: res.items

@@ -1,4 +1,6 @@
 //基础方法
+import crypto from 'crypto';//用于加密生成各种散列
+
 //封装输出JSON
 export const packJSON = (items,code=0) => {
     let msgs = {
@@ -14,3 +16,10 @@ export const packJSON = (items,code=0) => {
         "items": items
     };
 };
+
+const sha1 = (password) => {
+    let sha1 = crypto.createHash('sha1');
+    return sha1.update(password).digest('hex');
+};
+//custom encryption
+export const encryption = (password) => sha1('MICROBLOG:' + sha1(password));

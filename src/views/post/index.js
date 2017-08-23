@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { fetchGet } from 'src/service/posts';
 
+import QueueAnim from 'rc-queue-anim';
+
 class Post extends Component {
     constructor(props){
         super(props);
@@ -11,7 +13,7 @@ class Post extends Component {
     }
     componentDidMount() {
         const { location } = this.props;
-        fetchGet(location.search.slice(4))
+        fetchGet({id: location.search.slice(4)})
         .then(res => {
             this.setState({post: res.items});
         })
@@ -23,9 +25,10 @@ class Post extends Component {
         const { post } = this.state;
         return(
             <div>
-                <h1>POST DETAILS</h1>
-                <h2>{post.title}</h2>
-                <p>{post.content}</p>
+                <QueueAnim>
+                    <h2 key="title">{post.title}</h2>
+                    <p key="content">{post.content}</p>
+                </QueueAnim>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import fetch from './fetch';
+import fetch, { fetchUpload } from './fetch';
 
 export function fetchDetail(query) {
     return fetch('/api/user/detail?uid='+ query.uid,'GET');
@@ -11,3 +11,7 @@ export function fetchUpdate(data) {
 export function fetchPosts(query) {
     return fetch('/api/user/posts?uid='+ query.uid,'GET');
 };
+
+export function uploadAvatar(file){
+    return fetchUpload('/api/upload/avatar',file);
+}

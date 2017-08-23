@@ -1,7 +1,7 @@
 import UserDetailModel from '../models/userDetail';
 import UserModel from '../models/user';
 import PostModel from '../models/post';
-import { packJSON } from './base';
+import { packJSON, encryption } from './base';
 
 class UserDetail{
     constructor(){
@@ -24,15 +24,21 @@ class UserDetail{
         }
     }
     async update(req,res,next){
-        const { uid, user } = req.body;
-        if(!uid || !user) res.send(packJSON(err,6));
+        const { uid, opassword, user } = req.body;
+        if(!uid || !user || !opassword) res.send(packJSON(err,6));
         try {
-            await UserDetailModel.findOneAndUpdate({uid: uid}, user);
-            await UserModel.findOneAndUpdate({uid: uid}, {
-                user_name: user.user_name,
-                password: user.password
-            });
-            res.send(packJSON('更新成功'));
+            const findUser = await UserModel.findOne({uid: uid, password: encryption(opassword)});
+            console.log(findUser);
+            if(!findUser){
+                res.send(packJSON('密码错误，请重新输入',6));
+            }else{
+                await UserDetailModel.findOneAndUpdate({uid: uid}, user);
+                await UserModel.findOneAndUpdate({uid: uid, password: encryption(opassword)}, {
+                    user_name: user.user_name,
+                    password: encryption(user.password)
+                });
+                res.send(packJSON('更新成功'));
+            }
         } catch (err) {
             res.send(packJSON(err),9);
         }

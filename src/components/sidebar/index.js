@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { changeStyle } from 'src/redux/styleReducer';
+import { avatarUrl } from 'src/host';
 
 import Subheader from 'material-ui/Subheader';
 import { List, ListItem } from 'material-ui/List';
@@ -37,7 +38,7 @@ class Sidebar extends Component {
                             Identity: {identity}
                         </h5>
                         <div className="avatar-box">
-                            <img src={avatar}></img>
+                            <img src={avatarUrl + avatar} title={username}></img>
                             <h1>{username}</h1>
                             <h3>uid: {uid}</h3>
                         </div>

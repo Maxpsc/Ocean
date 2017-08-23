@@ -13,7 +13,7 @@ class AdminPosts extends Component {
         this.beginEdit = this.beginEdit.bind(this);
     }
     componentDidMount() {
-        this.props.getPosts();
+        this.props.getPosts({});
     }
     setValue(key) {
         return (val) => {

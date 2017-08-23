@@ -12,10 +12,12 @@ import router from './routes';
 
 const app = express();
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());//for 'application/json'
+app.use(bodyParser.urlencoded({ extended: true }));//for 'application/x-www-form-urlencoded'
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+//static sources
+app.use('/static',express.static(path.join(__dirname, 'static')));
 //session
 app.use(session({
 	secret: settings.cookieSecret,
@@ -28,8 +30,6 @@ app.use(session({
 	// 	url: 'mongodb://'+ settings.host +'/'+ settings.db
 	// })
 }));
-//static sources
-app.use('/dist', express.static('dist'));
 
 app.all('/*', (req,res,next) => {
 	res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
