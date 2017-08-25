@@ -25,44 +25,45 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Paper from 'material-ui/Paper';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+const wrapperStyle = {
+    display: 'flex',
+    width: '100%',
+    minHeight:'100%',
+    flexFlow: 'column'
+};
 class MainApp extends Component {
     constructor(props){
         super(props);
     }
     render() {
         const { identity, style } = this.props;
-        console.log(style);
         let curTheme = style === 'light' ? getMuiTheme(lightBaseTheme) : getMuiTheme(darkBaseTheme);
-        console.log(curTheme);
         return (
             <MuiThemeProvider muiTheme={curTheme}>
-                <div>
+                <Paper style={wrapperStyle}>
                     <Header />
-                        <Paper>
-                        <div className="wrapper">
-                            <Switch>
-                                <Route path="/" exact component={Home} />
-                                <Route path="/reg" component={Reg} />
-                                <Route path="/login" component={Login} />
-                                <Route path="/post" component={Post} />
-                                {/*
-                                <Route path="/public" component={Public} />
-                                <Route path="/posts" component={AdminPosts} />
-                                <Route path="/users" component={AdminUsers} />
-                                */}
-                                <UserRoute path="/public" component={Public} identity={identity} />
-                                <UserRoute path="/usersetting" component={UserSetting} identity={identity} />
-                                <UserRoute path="/userposts" component={UserPosts} identity={identity} />
+                    <div className="content">
+                        <Switch>
+                            <Route path="/" exact component={Home} />
+                            <Route path="/reg" component={Reg} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/post" component={Post} />
+                            {/*
+                            <Route path="/public" component={Public} />
+                            <Route path="/posts" component={AdminPosts} />
+                            <Route path="/users" component={AdminUsers} />
+                            */}
+                            <UserRoute path="/public" component={Public} identity={identity} />
+                            <UserRoute path="/usersetting" component={UserSetting} identity={identity} />
+                            <UserRoute path="/userposts" component={UserPosts} identity={identity} />
 
-                                <AdminRoute path="/posts" component={AdminPosts} identity={identity} />
-                                <AdminRoute path="/users" component={AdminUsers} identity={identity} />
-
-                                <Route component={NoMatch} />
-                            </Switch>
-                        </div>
-                        </Paper>
+                            <AdminRoute path="/posts" component={AdminPosts} identity={identity} />
+                            <AdminRoute path="/users" component={AdminUsers} identity={identity} />
+                            <Route component={NoMatch} />
+                        </Switch>
+                    </div>
                     <Footer />
-                </div>
+                </Paper>
             </MuiThemeProvider>
         );
     }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { dateFormat } from 'src/service/format';
 
-import MField from './MField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';

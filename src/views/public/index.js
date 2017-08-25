@@ -81,6 +81,7 @@ class Public extends Component {
                             labelText="Content"
                             value={content}
                             multiLine={true}
+                            rowsMax={20}
                             required
                             onChange={this.setValue('content')}
                             fullWidth={true}

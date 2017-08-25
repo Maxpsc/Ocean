@@ -105,7 +105,7 @@ class UserSetting extends Component {
         const npasswordValid = passwordReg.test(npassword);
 
         return (
-            <div className="form-box">
+            <div style={{textAlign:'center'}}>
                 <QueueAnim>
                     <img className="avatar-img" src={avatarUrl + avatar} key="avatar"></img>
                     <Dropzone

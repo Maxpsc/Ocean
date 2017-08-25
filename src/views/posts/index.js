@@ -67,6 +67,7 @@ class AdminPosts extends Component {
                         labelText="Content"
                         value={editPost.content}
                         multiLine={true}
+                        rowsMax={10}
                         required
                         onChange={this.setValue('content')}
                         fullWidth={true}
