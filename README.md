@@ -34,13 +34,17 @@ build代码：
 
 ## 预览
 #### 首页
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot1.png"/>
+
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot1.png" />
 
 #### markdown展示页
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot2.png"/>
+
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot2.png" />
 
 #### 修改个人信息
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot3.png"/>
+
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot3.png" />
+
 ## 我想说的
 
 ## 待实现
