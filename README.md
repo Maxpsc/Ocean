@@ -33,17 +33,15 @@ build代码：
 `npm run build`  
 
 ## 预览
-#### 首页
 
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot1.png" />
+#### 首页
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot1.png" width="500" height=“300” align="center/>
 
 #### markdown展示页
-
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot2.png" />
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot2.png" width="500" height=“300” align="center/>
 
 #### 修改个人信息
-
-<img src="https://github.com/Maxpsc/Ocean/docs/screenshot3.png" />
+<img src="https://github.com/Maxpsc/Ocean/docs/screenshot3.png" width="500" height=“300” align="center/>
 
 ## 我想说的
 
