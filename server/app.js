@@ -36,7 +36,7 @@ app.all('/*', (req,res,next) => {
 	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
 	res.header("Access-Control-Allow-Credentials", true);
 	res.header('Access-Control-Allow-Headers', 'Accept, Content-Type');
-	res.header('X-Powered-By', 'MicroBlog');
+	res.header('X-Powered-By', 'Ocean');
 	// if (req.method === 'OPTIONS') {
 	//   	res.send(200);
 	// } else {

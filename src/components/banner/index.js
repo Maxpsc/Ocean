@@ -34,7 +34,7 @@ export default class Banner extends Component{
         }
         return (
             <div className="banner">
-                <h1>Welcome to MicroBlog!</h1>
+                <h1>Welcome to the Ocean of knowledge!</h1>
                 {subTitle}
                 <div className="wave"></div>
                 <div className="wave"></div>

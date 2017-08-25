@@ -1,5 +1,5 @@
 {
-  "name": "microblog",
+  "name": "Ocean",
   "version": "1.0.0",
   "scripts": {
     "server": "SERVER_PORT=3000 node server.js --harmony-async-await",
