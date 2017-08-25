@@ -1,7 +1,7 @@
 import express from 'express';
 import db from './db.js';
 import path from 'path';
-//import favicon from 'serve-favicon';
+// import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
@@ -11,13 +11,10 @@ import settings from './Setting';
 import router from './routes';
 
 const app = express();
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());//for 'application/json'
 app.use(bodyParser.urlencoded({ extended: true }));//for 'application/x-www-form-urlencoded'
 app.use(cookieParser());
 
-//static sources
-app.use('/static',express.static(path.join(__dirname, 'static')));
 //session
 app.use(session({
 	secret: settings.cookieSecret,
@@ -30,6 +27,8 @@ app.use(session({
 	// 	url: 'mongodb://'+ settings.host +'/'+ settings.db
 	// })
 }));
+//static sources
+app.use('/static',express.static(path.join(__dirname, 'static')));
 
 app.all('/*', (req,res,next) => {
 	res.header("Access-Control-Allow-Origin", req.headers.origin || '*');

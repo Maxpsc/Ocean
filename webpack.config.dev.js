@@ -63,7 +63,8 @@ module.exports = {
 	 	new ExtractTextPlugin("bundle.css"),//分离css
         //根据模板自动生成html
         new HtmlWebpackPlugin({
-            title: 'MicroBlog'
+            title: 'Ocean',
+			template: 'src/template.html'
         }),
         new webpack.HotModuleReplacementPlugin()//热替换
   	],
