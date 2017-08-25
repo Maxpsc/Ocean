@@ -37,11 +37,11 @@ build代码：
 ![image](https://github.com/Maxpsc/Ocean/blob/master/docs/screenshot1.png)
 
 #### markdown展示
-![image](https://github.com/Maxpsc/Ocean/blob/master/blob/master/docs/screenshot2.png)
+![image](https://github.com/Maxpsc/Ocean/blob/master/docs/screenshot2.png)
 
 #### 修改个人信息
 ![image](https://github.com/Maxpsc/Ocean/blob/master/docs/screenshot3.png)
 
-## 我想说的
+## 开发心得
 
 ## 待实现
