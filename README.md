@@ -1,4 +1,4 @@
-# Ocean
+# ![image](https://github.com/Maxpsc/Ocean/blob/master/docs/ocean.png)
 A web app for sharing blogs and knowledge
 
 ## 前言
