@@ -12,6 +12,13 @@ A web app for sharing blogs and knowledge
 - 前端: react, react-router4.x, redux, es6+, material-ui  
 - 构建: webpack, babel  
 
+## 特点
+- 支持用户注册、登录、登出，区分管理员和注册用户的权限
+- 注册用户可编辑发表文章，支持markdown格式
+- 用户可修改个人信息，上传头像，查看已发表文章
+- 管理员可管理所有用户和已发表的文章
+- 可全局修切换样式（明暗）
+
 ## 安装,启动
 clone代码到本地并安装依赖：  
 	`git clone https://github.com/Maxpsc/Ocean.git`  
@@ -45,3 +52,11 @@ build代码：
 ## 开发心得
 
 ## 待实现
+- 列表项分页
+- 优化样式
+	- 首页文章简要信息
+	- 表格管理文章行高限制
+	- 多端适配
+	- 。。。其它
+- 上传图片添加文件大小限制，裁剪功能
+- 优化代码结构，优化性能
