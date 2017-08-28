@@ -1,8 +1,8 @@
 # ![image](https://github.com/Maxpsc/Ocean/blob/master/docs/ocean.png)
-A web app for sharing blogs and knowledge
+A web app for sharing knowledge
 
 ## 前言
-这只是一个demo级别的blog网站，开发初衷是学习node的`express`框架，一开始网站的前端是用ejs模板渲染出来的，几乎没有前端的js代码，逻辑和功能也很简单。后来就想前后端分离，用`react`全家桶重新实现功能，后来逻辑越来越多，也按照产品的规格去实现。
+这只是一个demo级别的blog网站，我的开发初衷是学习node的`express`框架，一开始网站的前端是用ejs模板渲染出来的，几乎没有前端的js代码，逻辑和功能也很简单。后来前后端分离，用`react`全家桶重新实现并增强了很多功能。
 
 一开始名字就是简单的Microblog，后来改名Ocean，寓意分享知识的海洋。准备功能再完善一些能在公网上线，顺便学习下服务器部署、运维那些事儿。
 
@@ -50,6 +50,7 @@ build代码：
 ![image](https://github.com/Maxpsc/Ocean/blob/master/docs/screenshot3.png)
 
 ## 开发心得
+抽空补完
 
 ## 待实现
 - 列表项分页
